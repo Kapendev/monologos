@@ -1,8 +1,6 @@
 extends Control
 
-onready var start: Button = $MarginContainer/VBoxContainer/Start
-onready var options: Button = $MarginContainer/VBoxContainer/Options
-onready var exit: Button = $MarginContainer/VBoxContainer/Exit
+onready var start: Button = $Start
 
 func _ready():
 	start.grab_focus()
