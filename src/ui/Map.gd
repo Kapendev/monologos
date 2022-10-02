@@ -2,7 +2,6 @@ tool
 extends Node2D
 
 const lib := preload("res://src/Lib.gd")
-
 const CELL_SIZE := Vector2(16, 16)
 const ACTOR_SIZE := 4
 
