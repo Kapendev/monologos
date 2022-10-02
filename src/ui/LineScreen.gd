@@ -1,3 +1,4 @@
+tool
 extends Control
 
 signal show_ended
@@ -11,6 +12,8 @@ enum Mode {
 
 const lib := preload("res://src/Lib.gd")
 
+export var width := 320 setget set_width
+export var height := 180 setget set_height
 export var hide_speed := 3
 export var show_speed := 3
 var mode: int = Mode.IDLE
@@ -18,7 +21,10 @@ var points := []
 var removed_points := []
 
 func _ready() -> void:
-	create_points()
+	if Engine.editor_hint:
+		set_process(false)
+	else:
+		create_points()
 
 func _process(_delta) -> void:
 	match mode:
@@ -38,8 +44,11 @@ func _process(_delta) -> void:
 				emit_signal("hide_ended")
 
 func _draw() -> void:
-	for point in points:
-		draw_h_line(point)
+	if Engine.editor_hint:
+		draw_rect(Rect2(0, 0, width, height), Color(1, 1, 1, 0.2))
+	else:
+		for point in points:
+			draw_h_line(point)
 
 func draw_h_line(point: Vector2) -> void:
 	"""Draws a horizontal line from the origin."""
@@ -50,9 +59,8 @@ func draw_h_line(point: Vector2) -> void:
 	)
 
 func create_points() -> void:
-	var size = get_viewport().size
-	for i in range(size.y):
-		points.append(Vector2(size.x, i))
+	for i in range(height):
+		points.append(Vector2(width, i))
 
 func remove_points(n: int) -> void:
 	for _i in range(n):
@@ -78,3 +86,13 @@ func go_show_mode() -> void:
 func go_hide_mode() -> void:
 	show()
 	mode = Mode.HIDE
+
+func set_width(new: int) -> void:
+	width = new
+	rect_size.x = width
+	update()
+
+func set_height(new: int) -> void:
+	height = new
+	rect_size.y = height
+	update()

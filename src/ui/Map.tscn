@@ -2,5 +2,9 @@
 
 [ext_resource path="res://src/ui/Map.gd" type="Script" id=1]
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 script = ExtResource( 1 )

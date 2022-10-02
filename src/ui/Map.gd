@@ -1,5 +1,11 @@
 tool
-extends Node2D
+extends Control
+
+enum Mode {
+	IDLE,
+	SHOW,
+	HIDE,
+}
 
 const lib := preload("res://src/Lib.gd")
 const CELL_SIZE := Vector2(16, 16)
@@ -22,17 +28,21 @@ func _draw() -> void:
 
 func draw_h_line(x: int, y: int) -> void:
 	"""Draws a horizontal line from the origin."""
+	var x_offset := -CELL_SIZE.x * width / 2.0
+	var y_offset := -CELL_SIZE.y * height / 2.0
 	draw_line(
-		Vector2(0, CELL_SIZE.y * y),
-		Vector2(CELL_SIZE.x * x, CELL_SIZE.y * y),
+		Vector2(x_offset, y_offset + CELL_SIZE.y * y),
+		Vector2(x_offset + CELL_SIZE.x * x, y_offset + CELL_SIZE.y * y),
 		lib.GREY
 	)
 
 func draw_v_line(x: int, y: int) -> void:
 	"""Draws a vertical line from the origin."""
+	var x_offset := -CELL_SIZE.x * width / 2.0
+	var y_offset := -CELL_SIZE.y * height / 2.0
 	draw_line(
-		Vector2(CELL_SIZE.x * x + 1, 0),
-		Vector2(CELL_SIZE.x * x + 1, CELL_SIZE.y * y + 1),
+		Vector2(x_offset + CELL_SIZE.x * x + 1, y_offset),
+		Vector2(x_offset + CELL_SIZE.x * x + 1, y_offset + CELL_SIZE.y * y + 1),
 		lib.PURPLE
 )
 
