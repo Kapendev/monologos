@@ -1,0 +1,20 @@
+First person room game
+Move in a grid
+Go to the exit and win
+Searching for someone that was with you at the start
+
+Click button to open the map
+A map shows everything in the grid
+Find your place in the map to avoid stuff
+Map has dots that are enemies or you
+
+Move counter
+After N moves a chaser appears
+They will kill all enemies first, then the player
+The chaser ends the game
+
+If an enemy is found, fight or run
+Running will cost 4 moves and can fail
+Fight is a game where you click right/left at a specific time
+Good click = hit
+Bas click = lose 2 hp
