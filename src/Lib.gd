@@ -1,4 +1,4 @@
-const BLACK := Color(0.13, 0.12, 0.12)
+const BLACK := Color("#282328")
 const YELLOW := Color(0.93, 0.92, 0.73)
 const PURPLE := Color(0.45, 0.47, 0.71)
 const PINK := Color(0.67, 0.44, 0.69)
@@ -9,7 +9,8 @@ const BLUE := Color(0.61, 0.8, 0.84)
 
 class Grid:
 	var size := Vector2()
-	var actors := PoolVector2Array()
+	var actors := [] # Vector2
+	var walls := [] # Vector2
 	
 	func _init(_size: Vector2):
 		size = _size
@@ -41,8 +42,17 @@ class Grid:
 	
 	func move_actor(id: int, position: Vector2) -> void:
 		"""Moves an actor in the grid."""
-		if is_inside(position) and not position in actors:
+		if is_inside(position) and not position in walls:
 			actors[id] = position
+	
+	func add_wall(position: Vector2) -> int:
+		"""Adds a new wall to the grid. Returns the id of the created wall."""
+		walls.append(position)
+		return len(walls) - 1
+	
+	func remove_wall(id: int) -> void:
+		"""Removes a wall from the grid."""
+		walls[id].x = -1
 
 static func new_grid(size: Vector2) -> Grid:
 	"""Returns a new grid."""

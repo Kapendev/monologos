@@ -12,6 +12,7 @@ enum Mode {
 
 const lib := preload("res://src/Lib.gd")
 
+export var can_autostart := false
 export var width := 320 setget set_width
 export var height := 180 setget set_height
 export var hide_speed := 3
@@ -25,6 +26,8 @@ func _ready() -> void:
 		set_process(false)
 	else:
 		create_points()
+		if can_autostart:
+			go_hide_mode()
 
 func _process(_delta) -> void:
 	match mode:

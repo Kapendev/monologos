@@ -21,10 +21,13 @@ func _draw() -> void:
 		draw_h_line(grid.width() - 1, i)
 	for i in range(grid.width()):
 		draw_v_line(i, grid.height() - 1)
-	# Draw the actors in the grid.
+	# Draw the actors and walls in the grid.
 	for actor in grid.actors:
 		if grid.is_inside(actor):
 			draw_actor(actor)
+	for wall in grid.walls:
+		if grid.is_inside(wall):
+			draw_wall(wall)
 
 func draw_h_line(x: int, y: int) -> void:
 	"""Draws a horizontal line from the origin."""
@@ -33,7 +36,7 @@ func draw_h_line(x: int, y: int) -> void:
 	draw_line(
 		Vector2(x_offset, y_offset + CELL_SIZE.y * y),
 		Vector2(x_offset + CELL_SIZE.x * x, y_offset + CELL_SIZE.y * y),
-		lib.GREY
+		lib.PURPLE
 	)
 
 func draw_v_line(x: int, y: int) -> void:
@@ -47,11 +50,27 @@ func draw_v_line(x: int, y: int) -> void:
 )
 
 func draw_actor(actor: Vector2) -> void:
+	var x_offset := -CELL_SIZE.x * width / 2.0
+	var y_offset := -CELL_SIZE.y * height / 2.0
+	var offset := Vector2(x_offset, y_offset)
 	"""Draws an actor."""
 	draw_circle(
-		CELL_SIZE * actor + CELL_SIZE / 2,
+		offset + CELL_SIZE * actor + CELL_SIZE / 2,
 		ACTOR_SIZE,
-		lib.BLUE
+		lib.RED
+	)
+
+func draw_wall(wall: Vector2) -> void:
+	var x_offset := -CELL_SIZE.x * width / 2.0 
+	var y_offset := -CELL_SIZE.y * height / 2.0
+	var offset := Vector2(x_offset, y_offset)
+	"""Draws an actor."""
+	draw_rect(
+		Rect2(
+			offset + CELL_SIZE * wall + Vector2(1, 1),
+			CELL_SIZE - Vector2(1, 1)
+		),
+		lib.PURPLE
 	)
 
 func set_width(new) -> void:
