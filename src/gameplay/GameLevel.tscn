@@ -1,76 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/sprites/floor0.png" type="Texture" id=1]
-[ext_resource path="res://assets/sprites/bittersweet.png" type="Texture" id=2]
-[ext_resource path="res://src/ui/LineScreen.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/gameplay/GameMap.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/gameplay/GameLevel.gd" type="Script" id=4]
 
-[sub_resource type="PlaneMesh" id=1]
-size = Vector2( 33, 33 )
+[node name="GameLevel" type="Node"]
+script = ExtResource( 4 )
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 30, 30, 30 )
-
-[sub_resource type="Environment" id=3]
-background_mode = 1
-ambient_light_color = Color( 1, 1, 1, 1 )
-fog_enabled = true
-fog_color = Color( 0, 0, 0, 1 )
-fog_sun_color = Color( 0, 0, 0, 1 )
-fog_depth_begin = 0.0
-fog_depth_end = 10.0
-adjustment_enabled = true
-adjustment_brightness = 0.92
-adjustment_contrast = 1.99
-adjustment_saturation = 0.01
-
-[sub_resource type="Shader" id=4]
-code = "// Made by Fernando Brandt
-
-shader_type canvas_item;
-
-uniform bool flip ;
-uniform sampler2D gradient : hint_black; // It can be whatever palette you want
-
-
-void fragment(){ 
-	vec4 col = texture(SCREEN_TEXTURE,SCREEN_UV);
-	
-	float lum = dot(col.rgb,vec3(0.2126,0.7152,0.0722)); // luminance
-	
-	
-	col = texture(gradient,vec2(abs(float(flip) - lum),0));
-	
-	
-	COLOR = col;
-}"
-
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
-shader_param/flip = null
-shader_param/gradient = ExtResource( 2 )
-
-[node name="GameLevel" type="Spatial"]
-
-[node name="Ground" type="MeshInstance" parent="."]
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
-fov = 90.0
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 3 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource( 5 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="LineScreen" parent="." instance=ExtResource( 3 )]
-margin_right = 0.0
-margin_bottom = 0.0
-can_autostart = true
-hide_speed = 2
-show_speed = 2
+[node name="GameMap" parent="." instance=ExtResource( 2 )]

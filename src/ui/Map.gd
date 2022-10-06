@@ -1,12 +1,6 @@
 tool
 extends Control
 
-enum Mode {
-	IDLE,
-	SHOW,
-	HIDE,
-}
-
 const lib := preload("res://src/Lib.gd")
 const CELL_SIZE := Vector2(16, 16)
 const ACTOR_SIZE := 4
@@ -29,48 +23,40 @@ func _draw() -> void:
 		if grid.is_inside(wall):
 			draw_wall(wall)
 
+func x_offset() -> float:
+	return -CELL_SIZE.x * width / 2.0
+
+func y_offset() -> float:
+	return -CELL_SIZE.y * height / 2.0
+
 func draw_h_line(x: int, y: int) -> void:
-	"""Draws a horizontal line from the origin."""
-	var x_offset := -CELL_SIZE.x * width / 2.0
-	var y_offset := -CELL_SIZE.y * height / 2.0
 	draw_line(
-		Vector2(x_offset, y_offset + CELL_SIZE.y * y),
-		Vector2(x_offset + CELL_SIZE.x * x, y_offset + CELL_SIZE.y * y),
-		lib.PURPLE
+		Vector2(x_offset(), y_offset() + CELL_SIZE.y * y),
+		Vector2(x_offset() + CELL_SIZE.x * x, y_offset() + CELL_SIZE.y * y),
+		lib.C3
 	)
 
 func draw_v_line(x: int, y: int) -> void:
-	"""Draws a vertical line from the origin."""
-	var x_offset := -CELL_SIZE.x * width / 2.0
-	var y_offset := -CELL_SIZE.y * height / 2.0
 	draw_line(
-		Vector2(x_offset + CELL_SIZE.x * x + 1, y_offset),
-		Vector2(x_offset + CELL_SIZE.x * x + 1, y_offset + CELL_SIZE.y * y + 1),
-		lib.PURPLE
+		Vector2(x_offset() + CELL_SIZE.x * x + 1, y_offset()),
+		Vector2(x_offset() + CELL_SIZE.x * x + 1, y_offset() + CELL_SIZE.y * y + 1),
+		lib.C3
 )
 
-func draw_actor(actor: Vector2) -> void:
-	var x_offset := -CELL_SIZE.x * width / 2.0
-	var y_offset := -CELL_SIZE.y * height / 2.0
-	var offset := Vector2(x_offset, y_offset)
-	"""Draws an actor."""
-	draw_circle(
-		offset + CELL_SIZE * actor + CELL_SIZE / 2,
-		ACTOR_SIZE,
-		lib.RED
-	)
-
 func draw_wall(wall: Vector2) -> void:
-	var x_offset := -CELL_SIZE.x * width / 2.0 
-	var y_offset := -CELL_SIZE.y * height / 2.0
-	var offset := Vector2(x_offset, y_offset)
-	"""Draws an actor."""
 	draw_rect(
 		Rect2(
-			offset + CELL_SIZE * wall + Vector2(1, 1),
+			Vector2(x_offset(), y_offset()) + CELL_SIZE * wall + Vector2(1, 1),
 			CELL_SIZE - Vector2(1, 1)
 		),
-		lib.PURPLE
+		lib.C3
+	)
+
+func draw_actor(actor: Vector2) -> void:
+	draw_circle(
+		Vector2(x_offset(), y_offset()) + CELL_SIZE * actor + CELL_SIZE / 2,
+		ACTOR_SIZE,
+		lib.C4
 	)
 
 func set_width(new) -> void:

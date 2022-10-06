@@ -1,0 +1,69 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/sprites/floor1.png" type="Texture" id=1]
+[ext_resource path="res://assets/sprites/bittersweet.png" type="Texture" id=2]
+[ext_resource path="res://game_env.tres" type="Environment" id=3]
+[ext_resource path="res://src/gameplay/GameMap.gd" type="Script" id=4]
+[ext_resource path="res://assets/sprites/noise.png" type="Texture" id=5]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 33, 33 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 30, 30, 30 )
+
+[sub_resource type="Shader" id=4]
+code = "// Made by Fernando Brandt
+
+shader_type canvas_item;
+
+uniform bool flip ;
+uniform sampler2D gradient : hint_black; // It can be whatever palette you want
+
+
+void fragment(){ 
+	vec4 col = texture(SCREEN_TEXTURE,SCREEN_UV);
+	
+	float lum = dot(col.rgb,vec3(0.2126,0.7152,0.0722)); // luminance
+	
+	
+	col = texture(gradient,vec2(abs(float(flip) - lum),0));
+	
+	
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/flip = null
+shader_param/gradient = ExtResource( 2 )
+
+[node name="GameMap" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="Ground" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Noise" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1.2 )
+modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
+pixel_size = 0.15
+billboard = 1
+shaded = true
+texture = ExtResource( 5 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
+fov = 90.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Tween" type="Tween" parent="."]

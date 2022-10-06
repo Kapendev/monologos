@@ -1,11 +1,7 @@
-const BLACK := Color("#282328")
-const YELLOW := Color(0.93, 0.92, 0.73)
-const PURPLE := Color(0.45, 0.47, 0.71)
-const PINK := Color(0.67, 0.44, 0.69)
-const GREY := Color(0.43, 0.43, 0.43)
-const GREEN := Color(0.65, 0.87, 0.58)
-const RED := Color(0.66, 0.43, 0.4)
-const BLUE := Color(0.61, 0.8, 0.84)
+const C1 := Color("#282328")
+const C2 := Color("#545c7e")
+const C3 := Color("#c56981")
+const C4 := Color("#a3a29a")
 
 class Grid:
 	var size := Vector2()

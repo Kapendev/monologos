@@ -58,7 +58,7 @@ func draw_h_line(point: Vector2) -> void:
 	draw_line(
 		Vector2(0, point.y),
 		point,
-		lib.BLACK
+		lib.C1
 	)
 
 func create_points() -> void:
