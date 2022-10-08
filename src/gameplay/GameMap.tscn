@@ -48,6 +48,7 @@ material/0 = SubResource( 2 )
 
 [node name="Noise" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1.2 )
+visible = false
 modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
 pixel_size = 0.15
 billboard = 1
@@ -57,6 +58,9 @@ texture = ExtResource( 5 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
 fov = 90.0
+
+[node name="Target" type="Spatial" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776457, -2.89778 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 3 )
