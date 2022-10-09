@@ -46,8 +46,20 @@ script = ExtResource( 4 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="Noise" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1.2 )
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
+fov = 90.0
+far = 50.0
+
+[node name="Target" type="Sprite3D" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.517638, -1.93185 )
+pixel_size = 0.05
+billboard = 1
+shaded = true
+double_sided = false
+
+[node name="Noise" type="Sprite3D" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.310583, -1.15911 )
 visible = false
 modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
 pixel_size = 0.15
@@ -55,19 +67,12 @@ billboard = 1
 shaded = true
 texture = ExtResource( 5 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
-fov = 90.0
-
-[node name="Target" type="Spatial" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776457, -2.89778 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 3 )
-
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource( 5 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 3 )

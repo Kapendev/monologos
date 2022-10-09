@@ -2,12 +2,18 @@ tool
 extends Control
 
 const lib := preload("res://src/Lib.gd")
-const CELL_SIZE := Vector2(16, 16)
+const CELL_SIZE := Vector2(16.0, 16.0)
 const ACTOR_SIZE := 4
+const MAP_OFFSET := 200
 
 export(int, 1, 50) var width := 1 setget set_width
 export(int, 1, 50) var height := 1 setget set_height
 var grid := lib.new_grid(Vector2(width, height))
+onready var tween: Tween = $Tween
+
+func _ready():
+	if not Engine.editor_hint:
+		tween.connect("tween_all_completed", self, "on_tween_all_completed")
 
 func _draw() -> void:
 	# Draw the grid.
@@ -22,6 +28,33 @@ func _draw() -> void:
 	for wall in grid.walls:
 		if grid.is_inside(wall):
 			draw_wall(wall)
+
+func show_map(time: float) -> void:
+	if not tween.is_active():
+		var viewport_height = get_viewport_rect().size.y
+		show()
+		tween.interpolate_property(
+			self, "margin_top", viewport_height, 0.0, time, Tween.TRANS_SINE
+		)
+		tween.start()
+
+func hide_map(time: float) -> void:
+	if not tween.is_active():
+		var viewport_height = get_viewport_rect().size.y
+		show()
+		tween.interpolate_property(
+			self, "margin_top", 0.0, viewport_height, time, Tween.TRANS_SINE
+		)
+		tween.start()
+
+func set_map_visibility(value: bool, time: float) -> void:
+	if value:
+		show_map(time)
+	else:
+		hide_map(time)
+
+func is_map_visible() -> bool:
+	return visible
 
 func x_offset() -> float:
 	return -CELL_SIZE.x * width / 2.0
@@ -38,23 +71,23 @@ func draw_h_line(x: int, y: int) -> void:
 
 func draw_v_line(x: int, y: int) -> void:
 	draw_line(
-		Vector2(x_offset() + CELL_SIZE.x * x + 1, y_offset()),
-		Vector2(x_offset() + CELL_SIZE.x * x + 1, y_offset() + CELL_SIZE.y * y + 1),
+		Vector2(x_offset() + CELL_SIZE.x * x + 1.0, y_offset()),
+		Vector2(x_offset() + CELL_SIZE.x * x + 1.0, y_offset() + CELL_SIZE.y * y + 1.0),
 		lib.C3
 )
 
 func draw_wall(wall: Vector2) -> void:
 	draw_rect(
 		Rect2(
-			Vector2(x_offset(), y_offset()) + CELL_SIZE * wall + Vector2(1, 1),
-			CELL_SIZE - Vector2(1, 1)
+			Vector2(x_offset(), y_offset()) + CELL_SIZE * wall + Vector2(1.0, 1.0),
+			CELL_SIZE - Vector2(1.0, 1.0)
 		),
 		lib.C3
 	)
 
 func draw_actor(actor: Vector2) -> void:
 	draw_circle(
-		Vector2(x_offset(), y_offset()) + CELL_SIZE * actor + CELL_SIZE / 2,
+		Vector2(x_offset(), y_offset()) + CELL_SIZE * actor + CELL_SIZE / 2.0,
 		ACTOR_SIZE,
 		lib.C4
 	)
@@ -70,3 +103,7 @@ func set_height(new) -> void:
 	height = new
 	grid.size.y = height
 	update()
+
+func on_tween_all_completed() -> void:
+	var viewport_height = get_viewport_rect().size.y
+	set_visible(margin_top != viewport_height)
