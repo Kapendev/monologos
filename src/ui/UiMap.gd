@@ -1,19 +1,17 @@
-tool
 extends Control
 
-const lib := preload("res://src/Lib.gd")
 const CELL_SIZE := Vector2(16.0, 16.0)
 const ACTOR_SIZE := 4
 const MAP_OFFSET := 200
 
-export(int, 1, 50) var width := 1 setget set_width
-export(int, 1, 50) var height := 1 setget set_height
-var grid := lib.new_grid(Vector2(width, height))
+var grid: Lib.Grid = null
+
 onready var tween: Tween = $Tween
 
-func _ready():
-	if not Engine.editor_hint:
-		tween.connect("tween_all_completed", self, "on_tween_all_completed")
+func _ready() -> void:
+	tween.connect("tween_all_completed", self, "on_tween_all_completed")
+	margin_top = get_viewport_rect().size.y
+	hide()
 
 func _draw() -> void:
 	# Draw the grid.
@@ -29,9 +27,12 @@ func _draw() -> void:
 		if grid.is_inside(wall):
 			draw_wall(wall)
 
+func is_active() -> bool:
+	return tween.is_active()
+
 func show_map(time: float) -> void:
 	if not tween.is_active():
-		var viewport_height = get_viewport_rect().size.y
+		var viewport_height := get_viewport_rect().size.y
 		show()
 		tween.interpolate_property(
 			self, "margin_top", viewport_height, 0.0, time, Tween.TRANS_SINE
@@ -40,7 +41,7 @@ func show_map(time: float) -> void:
 
 func hide_map(time: float) -> void:
 	if not tween.is_active():
-		var viewport_height = get_viewport_rect().size.y
+		var viewport_height := get_viewport_rect().size.y
 		show()
 		tween.interpolate_property(
 			self, "margin_top", 0.0, viewport_height, time, Tween.TRANS_SINE
@@ -57,23 +58,23 @@ func is_map_visible() -> bool:
 	return visible
 
 func x_offset() -> float:
-	return -CELL_SIZE.x * width / 2.0
+	return -CELL_SIZE.x * grid.width() / 2.0
 
 func y_offset() -> float:
-	return -CELL_SIZE.y * height / 2.0
+	return -CELL_SIZE.y * grid.height() / 2.0
 
 func draw_h_line(x: int, y: int) -> void:
 	draw_line(
 		Vector2(x_offset(), y_offset() + CELL_SIZE.y * y),
 		Vector2(x_offset() + CELL_SIZE.x * x, y_offset() + CELL_SIZE.y * y),
-		lib.C3
+		Lib.C3
 	)
 
 func draw_v_line(x: int, y: int) -> void:
 	draw_line(
 		Vector2(x_offset() + CELL_SIZE.x * x + 1.0, y_offset()),
 		Vector2(x_offset() + CELL_SIZE.x * x + 1.0, y_offset() + CELL_SIZE.y * y + 1.0),
-		lib.C3
+		Lib.C3
 )
 
 func draw_wall(wall: Vector2) -> void:
@@ -82,27 +83,15 @@ func draw_wall(wall: Vector2) -> void:
 			Vector2(x_offset(), y_offset()) + CELL_SIZE * wall + Vector2(1.0, 1.0),
 			CELL_SIZE - Vector2(1.0, 1.0)
 		),
-		lib.C3
+		Lib.C3
 	)
 
 func draw_actor(actor: Vector2) -> void:
 	draw_circle(
 		Vector2(x_offset(), y_offset()) + CELL_SIZE * actor + CELL_SIZE / 2.0,
 		ACTOR_SIZE,
-		lib.C4
+		Lib.C4
 	)
-
-func set_width(new) -> void:
-	"""Used for updating the editor grid."""
-	width = new
-	grid.size.x = width
-	update()
-
-func set_height(new) -> void:
-	"""Used for updating the editor grid."""
-	height = new
-	grid.size.y = height
-	update()
 
 func on_tween_all_completed() -> void:
 	var viewport_height = get_viewport_rect().size.y

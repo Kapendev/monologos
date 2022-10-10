@@ -10,16 +10,15 @@ enum Mode {
 	HIDE,
 }
 
-const lib := preload("res://src/Lib.gd")
+var mode: int = Mode.IDLE
+var points := []
+var removed_points := []
 
 export var can_autostart := false
 export var width := 320 setget set_width
 export var height := 180 setget set_height
 export var hide_speed := 3
 export var show_speed := 3
-var mode: int = Mode.IDLE
-var points := []
-var removed_points := []
 
 func _ready() -> void:
 	if Engine.editor_hint:
@@ -58,7 +57,7 @@ func draw_h_line(point: Vector2) -> void:
 	draw_line(
 		Vector2(0, point.y),
 		point,
-		lib.C1
+		Lib.C1
 	)
 
 func create_points() -> void:
@@ -93,9 +92,11 @@ func go_hide_mode() -> void:
 func set_width(new: int) -> void:
 	width = new
 	rect_size.x = width
-	update()
+	if Engine.editor_hint:
+		update()
 
 func set_height(new: int) -> void:
 	height = new
 	rect_size.y = height
-	update()
+	if Engine.editor_hint:
+		update()

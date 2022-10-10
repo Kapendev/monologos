@@ -16,6 +16,9 @@ func _ready() -> void:
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
 	noise.show()
 
+func is_active() -> bool:
+	return tween.is_active()
+
 func show_map(time: float) -> void:
 	if not tween.is_active():
 		noise.show()

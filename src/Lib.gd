@@ -1,3 +1,5 @@
+class_name Lib
+
 const C1 := Color("#282328")
 const C2 := Color("#545c7e")
 const C3 := Color("#c56981")
@@ -13,7 +15,10 @@ class Grid:
 
 	func is_inside(position: Vector2) -> bool:
 		"""Returns true if position is inside grid."""
-		return position >= Vector2.ZERO and position < size
+		return position.x >= 0.0 \
+		and position.x < size.x \
+		and position.y >= 0.0 \
+		and position.y < size.y \
 
 	func width() -> int:
 		"""Returns the width of the grid."""
@@ -36,10 +41,11 @@ class Grid:
 		"""Removes an actor from the grid."""
 		actors[id].x = -1
 	
-	func move_actor(id: int, position: Vector2) -> void:
+	func move_actor(id: int, step: Vector2) -> void:
 		"""Moves an actor in the grid."""
-		if is_inside(position) and not position in walls:
-			actors[id] = position
+		var new: Vector2 = actors[id] + step
+		if is_inside(new) and not new in walls:
+			actors[id] = new
 	
 	func add_wall(position: Vector2) -> int:
 		"""Adds a new wall to the grid. Returns the id of the created wall."""

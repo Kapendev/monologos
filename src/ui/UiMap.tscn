@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://src/ui/Map.gd" type="Script" id=1]
+[ext_resource path="res://src/ui/UiMap.gd" type="Script" id=1]
 
-[node name="Map" type="Control"]
+[node name="UiMap" type="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
