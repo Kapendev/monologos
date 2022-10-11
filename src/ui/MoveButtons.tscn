@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/ui/InputButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/ui/MoveButtons.gd" type="Script" id=2]
+
+[node name="MoveButtons" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="SpinLeftButton" parent="HBoxContainer" instance=ExtResource( 1 )]
+margin_right = 104.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+key = "ui_left"
+
+[node name="MoveButton" parent="HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 108.0
+margin_right = 212.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+key = "ui_up"
+
+[node name="SpinRightButton" parent="HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 216.0
+margin_right = 320.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+key = "ui_right"

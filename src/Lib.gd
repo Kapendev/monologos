@@ -41,11 +41,14 @@ class Grid:
 		"""Removes an actor from the grid."""
 		actors[id].x = -1
 	
+	func can_move_actor(id: int, step: Vector2) -> bool:
+		var new: Vector2 = (actors[id] + step).floor()
+		return is_inside(new) and not new in walls
+	
 	func move_actor(id: int, step: Vector2) -> void:
 		"""Moves an actor in the grid."""
-		var new: Vector2 = actors[id] + step
-		if is_inside(new) and not new in walls:
-			actors[id] = new
+		if can_move_actor(id, step):
+			actors[id] = (actors[id] + step).floor()
 	
 	func add_wall(position: Vector2) -> int:
 		"""Adds a new wall to the grid. Returns the id of the created wall."""

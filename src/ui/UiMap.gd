@@ -58,10 +58,10 @@ func is_map_visible() -> bool:
 	return visible
 
 func x_offset() -> float:
-	return -CELL_SIZE.x * grid.width() / 2.0
+	return -CELL_SIZE.x * (grid.width() / 2.0) + CELL_SIZE.x / 2.0
 
 func y_offset() -> float:
-	return -CELL_SIZE.y * grid.height() / 2.0
+	return -CELL_SIZE.y * (grid.height() / 2.0) + CELL_SIZE.y / 2.0
 
 func draw_h_line(x: int, y: int) -> void:
 	draw_line(
