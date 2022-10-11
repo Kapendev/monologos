@@ -16,6 +16,7 @@ func _ready():
 	# Create data.
 	grid = Lib.new_grid(Vector2(9.0, 9.0))
 	player = grid.add_actor((grid.size / 2.0).floor())
+	grid.add_actor(Vector2(0, 0))
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)
@@ -47,6 +48,11 @@ func spin_player_right() -> void:
 		Vector2.LEFT:
 			player_direction = Vector2.UP
 
+func update_game_map_target() -> void:
+	for id in range(len(grid.actors)):
+		if player != id and grid.actor(player) == grid.actors[id]:
+			print("Enemy")
+
 func can_move() -> bool:
 	return game_map.is_map_visible() \
 	and not game_map.is_active()
@@ -57,9 +63,13 @@ func on_pressed_spin_left() -> void:
 		spin_player_left()
 
 func on_pressed_move() -> void:
-	if can_move() and grid.can_move_actor(player, player_direction):
-		game_map.move()
-		grid.move_actor(player, player_direction)
+	if can_move():
+		if grid.can_move_actor(player, player_direction):
+			game_map.move()
+			grid.move_actor(player, player_direction)
+			update_game_map_target()
+		else:
+			game_map.dont_move()
 
 func on_pressed_spin_right() -> void:
 	if can_move():

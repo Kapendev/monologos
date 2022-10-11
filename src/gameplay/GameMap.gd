@@ -57,6 +57,21 @@ func tweeen(prop: String, value: Vector3, time: float) -> void:
 	)
 	tween.start()
 
+func dont_move() -> void:
+	if not tween.is_active():
+		tween.interpolate_property(
+			camera, "translation",
+			camera.translation, camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y) / 2.0,
+			move_time / 2.0, Tween.TRANS_SINE
+		)
+		tween.interpolate_property(
+			camera, "translation",
+			camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y) / 2.0, camera.translation,
+			move_time / 2.0, Tween.TRANS_SINE,
+			Tween.EASE_IN_OUT, move_time / 2.0
+		)
+		tween.start()
+
 func move() -> void:
 	if not tween.is_active():
 		tweeen(
