@@ -15,17 +15,18 @@ func _ready() -> void:
 
 func _draw() -> void:
 	# Draw the grid.
-	for i in range(grid.height()):
-		draw_h_line(grid.width() - 1, i)
-	for i in range(grid.width()):
-		draw_v_line(i, grid.height() - 1)
+	for i in range(grid.height + 1):
+		draw_h_line(grid.width, i)
+	for i in range(grid.width + 1):
+		draw_v_line(i, grid.height)
 	# Draw the actors and walls in the grid.
-	for actor in grid.actors:
-		if grid.is_inside(actor):
-			draw_actor(actor)
-	for wall in grid.walls:
-		if grid.is_inside(wall):
-			draw_wall(wall)
+	for y in range(grid.height):
+		for x in range(grid.width):
+			var position := Vector2(x, y)
+			if grid.is_wall(position):
+				draw_wall(position)
+			elif not grid.is_none(position):
+				draw_actor(position)
 
 func is_active() -> bool:
 	return tween.is_active()
@@ -58,10 +59,10 @@ func is_map_visible() -> bool:
 	return visible
 
 func x_offset() -> float:
-	return -CELL_SIZE.x * (grid.width() / 2.0) + CELL_SIZE.x / 2.0
+	return -CELL_SIZE.x * (grid.width / 2.0)
 
 func y_offset() -> float:
-	return -CELL_SIZE.y * (grid.height() / 2.0) + CELL_SIZE.y / 2.0
+	return -CELL_SIZE.y * (grid.height / 2.0)
 
 func draw_h_line(x: int, y: int) -> void:
 	draw_line(

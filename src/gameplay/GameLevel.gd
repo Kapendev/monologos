@@ -3,8 +3,8 @@ extends Node
 var anim_time := 0.5
 var start_time := 2.5
 
-var grid := Lib.new_grid(Vector2())
-var player := 0
+var grid: Lib.Grid
+var player: Vector2
 var player_direction := Vector2.UP
 
 onready var game_map := $GameMap
@@ -14,9 +14,13 @@ onready var tool_buttons := $ToolButtons
 
 func _ready():
 	# Create data.
-	grid = Lib.new_grid(Vector2(9.0, 9.0))
-	player = grid.add_actor((grid.size / 2.0).floor())
-	grid.add_actor(Vector2(0, 0))
+	grid = Lib.Grid.new(9, 9)
+	player = grid.add_friend(Vector2(3, 3), 0, 0, [])
+	grid.add_enemy(Vector2(0, 0), 0, 0, [])
+	grid.add_wall(Vector2(1, 0))
+	grid.add_wall(Vector2(2, 0))
+	grid.add_wall(Vector2(2, 1))
+	grid.add_wall(Vector2(3, 1))
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)
@@ -48,11 +52,6 @@ func spin_player_right() -> void:
 		Vector2.LEFT:
 			player_direction = Vector2.UP
 
-func update_game_map_target() -> void:
-	for id in range(len(grid.actors)):
-		if player != id and grid.actor(player) == grid.actors[id]:
-			print("Enemy")
-
 func can_move() -> bool:
 	return game_map.is_map_visible() \
 	and not game_map.is_active()
@@ -64,10 +63,9 @@ func on_pressed_spin_left() -> void:
 
 func on_pressed_move() -> void:
 	if can_move():
-		if grid.can_move_actor(player, player_direction):
+		if grid.exists(player + player_direction):
 			game_map.move()
-			grid.move_actor(player, player_direction)
-			update_game_map_target()
+			player = grid.move_actor(player, player + player_direction)
 		else:
 			game_map.dont_move()
 
