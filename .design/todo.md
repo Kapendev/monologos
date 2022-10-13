@@ -11,3 +11,11 @@
 - [ ] events
 - [ ] main menu
 - [ ] ending
+
+# Enemy Data
+
+``` text|sprite ```
+
+# Friend Data
+
+``` dialogue|change ```

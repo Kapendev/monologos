@@ -35,22 +35,20 @@ func is_active() -> bool:
 	return tween.is_active()
 
 func show_map(time: float) -> void:
-	if not tween.is_active():
-		var viewport_height := get_viewport_rect().size.y
-		show()
-		tween.interpolate_property(
-			self, "margin_top", viewport_height, 0.0, time, Tween.TRANS_SINE
-		)
-		tween.start()
+	var viewport_height := get_viewport_rect().size.y
+	show()
+	tween.interpolate_property(
+		self, "margin_top", viewport_height, 0.0, time, Tween.TRANS_SINE
+	)
+	tween.start()
 
 func hide_map(time: float) -> void:
-	if not tween.is_active():
-		var viewport_height := get_viewport_rect().size.y
-		show()
-		tween.interpolate_property(
-			self, "margin_top", 0.0, viewport_height, time, Tween.TRANS_SINE
-		)
-		tween.start()
+	var viewport_height := get_viewport_rect().size.y
+	show()
+	tween.interpolate_property(
+		self, "margin_top", 0.0, viewport_height, time, Tween.TRANS_SINE
+	)
+	tween.start()
 
 func set_map_visibility(value: bool, time: float) -> void:
 	if value:

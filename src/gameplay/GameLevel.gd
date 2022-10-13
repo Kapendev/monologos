@@ -8,9 +8,10 @@ var player: Vector2
 var player_direction := Vector2.UP
 
 onready var game_map := $GameMap
-onready var ui_map := $UiMap
 onready var move_buttons := $MoveButtons
 onready var tool_buttons := $ToolButtons
+onready var ui_map := $UiMap
+onready var ui_turn_counter := $UiTurnCounter
 
 func _ready():
 	randomize()
@@ -70,6 +71,7 @@ func on_pressed_move() -> void:
 				print("talk")
 			game_map.move()
 			player = grid.move_actor(player, target)
+			ui_turn_counter.add()
 		else:
 			game_map.dont_move()
 
@@ -82,4 +84,5 @@ func on_pressed_map() -> void:
 	if not game_map.is_active():
 		var is_map_visible: bool = game_map.is_map_visible()
 		game_map.set_map_visibility(not is_map_visible, anim_time)
+		ui_turn_counter.set_counter_visibility(not is_map_visible, anim_time)
 		ui_map.set_map_visibility(is_map_visible, anim_time)
