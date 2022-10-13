@@ -13,14 +13,13 @@ onready var move_buttons := $MoveButtons
 onready var tool_buttons := $ToolButtons
 
 func _ready():
+	randomize()
 	# Create data.
 	grid = Lib.Grid.new(9, 9)
-	player = grid.add_friend(Vector2(3, 3), 0, 0, [])
-	grid.add_enemy(Vector2(0, 0), 0, 0, [])
-	grid.add_wall(Vector2(1, 0))
-	grid.add_wall(Vector2(2, 0))
-	grid.add_wall(Vector2(2, 1))
-	grid.add_wall(Vector2(3, 1))
+	player = grid.add_friend(Vector2(), 0, 0, "")
+	for _i in range(randi() % 4):
+		spin_player_left()
+		game_map.spin_left_now()
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)
@@ -63,9 +62,14 @@ func on_pressed_spin_left() -> void:
 
 func on_pressed_move() -> void:
 	if can_move():
-		if grid.exists(player + player_direction):
+		var target := player + player_direction
+		if grid.exists(target) and not grid.is_wall(target):
+			if grid.is_enemy(target):
+				print("attack")
+			elif grid.is_friend(target):
+				print("talk")
 			game_map.move()
-			player = grid.move_actor(player, player + player_direction)
+			player = grid.move_actor(player, target)
 		else:
 			game_map.dont_move()
 

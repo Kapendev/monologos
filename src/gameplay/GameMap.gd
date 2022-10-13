@@ -80,6 +80,12 @@ func move() -> void:
 			move_time
 		)
 
+func spin_left_now() -> void:
+	camera.rotation += SPIN_VALUE
+
+func spin_right_now() -> void:
+	camera.rotation -= SPIN_VALUE
+
 func spin_left() -> void:
 	if not tween.is_active():
 		tweeen("rotation", camera.rotation + SPIN_VALUE, spin_time)

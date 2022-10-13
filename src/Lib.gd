@@ -6,7 +6,7 @@ const C3 := Color("#c56981")
 const C4 := Color("#a3a29a")
 
 enum ActorType {
-	NONE, WALL, FRIEND, ENEMY,
+	NONE, WALL, FRIEND, ENEMY
 }
 
 enum MoveType {
@@ -17,19 +17,29 @@ class Actor:
 	var type: int
 	var hp: int
 	var ap: int
+	var info: String
 	var moves: Array # int
 	
-	func _init(_type: int, _hp: int, _ap: int, _moves := []) -> void:
+	func _init(_type: int, _hp: int, _ap: int, _moves := [], _info := "") -> void:
 		type = _type
 		hp = _hp
 		ap = _ap
 		moves = _moves
+		info = _info
 	
-	func change(_type: int, _hp: int, _ap: int, _moves: Array) -> void:
+	func change(_type: int, _hp: int, _ap: int, _moves: Array, _info: String) -> void:
 		type = _type
 		hp = _hp
 		ap = _ap
 		moves = _moves
+		info = _info
+	
+	func change_with(actor: Actor) -> void:
+		type = actor.type
+		hp = actor.hp
+		ap = actor.ap
+		moves = actor.moves
+		info = actor.info
 
 class Grid:
 	var width: int
@@ -69,22 +79,22 @@ class Grid:
 	
 	func add_none(position: Vector2) -> Vector2:
 		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.NONE, 0, 0, [])
+		actor.change(ActorType.NONE, 0, 0, [], "")
 		return position
 	
 	func add_wall(position: Vector2) -> Vector2:
 		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.WALL, 0, 0, [])
+		actor.change(ActorType.WALL, 0, 0, [], "")
 		return position
 	
-	func add_friend(position: Vector2, hp: int, ap: int, moves: Array) -> Vector2:
+	func add_friend(position: Vector2, hp: int, ap: int, info: String, moves := []) -> Vector2:
 		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.FRIEND, hp, ap, moves)
+		actor.change(ActorType.FRIEND, hp, ap, moves, info)
 		return position
 	
-	func add_enemy(position: Vector2, hp: int, ap: int, moves: Array) -> Vector2:
+	func add_enemy(position: Vector2, hp: int, ap: int, info: String, moves := []) -> Vector2:
 		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.ENEMY, hp, ap, moves)
+		actor.change(ActorType.ENEMY, hp, ap, moves, info)
 		return position
 	
 	func is_none(position: Vector2) -> bool:
@@ -102,6 +112,6 @@ class Grid:
 	func move_actor(position: Vector2, new_position: Vector2) -> Vector2:
 		var actor: Actor = actors[index(position)]
 		var new_actor: Actor = actors[index(new_position)]
-		new_actor.change(actor.type, actor.hp, actor.ap, actor.moves)
+		new_actor.change_with(actor)
 		add_none(position)
 		return new_position

@@ -5,6 +5,7 @@ const ACTOR_SIZE := 4
 const MAP_OFFSET := 200
 
 var grid: Lib.Grid = null
+var blacks := [] # Vector2
 
 onready var tween: Tween = $Tween
 
@@ -23,7 +24,9 @@ func _draw() -> void:
 	for y in range(grid.height):
 		for x in range(grid.width):
 			var position := Vector2(x, y)
-			if grid.is_wall(position):
+			if position in blacks:
+				draw_black(position)
+			elif grid.is_wall(position):
 				draw_wall(position)
 			elif not grid.is_none(position):
 				draw_actor(position)
@@ -85,6 +88,15 @@ func draw_wall(wall: Vector2) -> void:
 			CELL_SIZE - Vector2(1.0, 1.0)
 		),
 		Lib.C3
+	)
+
+func draw_black(black: Vector2) -> void:
+	draw_rect(
+		Rect2(
+			Vector2(x_offset(), y_offset()) + CELL_SIZE * black + Vector2(1.0, 1.0),
+			CELL_SIZE - Vector2(1.0, 1.0)
+		),
+		Lib.C2
 	)
 
 func draw_actor(actor: Vector2) -> void:
