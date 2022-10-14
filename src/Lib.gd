@@ -1,5 +1,7 @@
 class_name Lib
 
+const SPRITES_PATH = "res://assets/sprites/{}.png"
+const SPLIT_PAT = "|"
 const C1 := Color("#282328")
 const C2 := Color("#545c7e")
 const C3 := Color("#c56981")
@@ -115,3 +117,9 @@ class Grid:
 		new_actor.change_with(actor)
 		add_none(position)
 		return new_position
+	
+	func get_actor_data(position: Vector2) -> Array:
+		return actors[index(position)].info.split(SPLIT_PAT)
+
+static func load_sprite(path: String) -> StreamTexture:
+	return load(SPRITES_PATH.format([path], "{}")) as StreamTexture

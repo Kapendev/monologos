@@ -3,11 +3,13 @@ extends Control
 var count := 0
 var anim_time := 0.3
 var hide_margin := -64
-var start_margin := margin_top
-var anim_margin := start_margin + 6
 
 onready var label: Label = $Label
 onready var tween: Tween = $Tween
+onready var start_modulate := label.modulate
+onready var anim_modulate := Color(start_modulate.r, start_modulate.g, start_modulate.b, 0.0)
+onready var start_margin := label.margin_top
+onready var anim_margin := start_margin + 2
 
 func _ready() -> void:
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
@@ -15,6 +17,10 @@ func _ready() -> void:
 func add() -> void:
 	count += 1
 	label.text = String(count)
+	tween.interpolate_property(
+		label, "modulate",
+		start_modulate, anim_modulate, anim_time
+	)
 	tween.interpolate_property(
 		label, "margin_top",
 		start_margin, anim_margin,

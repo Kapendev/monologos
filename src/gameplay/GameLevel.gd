@@ -21,6 +21,7 @@ func _ready():
 	for _i in range(randi() % 4):
 		spin_player_left()
 		game_map.spin_left_now()
+	grid.add_enemy(Vector2(2, 2), 0, 0, "floor2|hello") #roedpawojdpoawjs
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)
@@ -29,6 +30,11 @@ func _ready():
 	move_buttons.connect("pressed_move", self, "on_pressed_move")
 	move_buttons.connect("pressed_spin_right", self, "on_pressed_spin_right")
 	tool_buttons.connect("pressed_map", self, "on_pressed_map")
+
+func enter_attack(target: Vector2) -> void:
+	var enemy_data := grid.get_actor_data(target)
+	var sprite_name: String = enemy_data[0]
+	game_map.target.texture = Lib.load_sprite(sprite_name)
 
 func spin_player_left() -> void:
 	match player_direction:
@@ -66,11 +72,11 @@ func on_pressed_move() -> void:
 		var target := player + player_direction
 		if grid.exists(target) and not grid.is_wall(target):
 			if grid.is_enemy(target):
-				print("attack")
+				enter_attack(target)
 			elif grid.is_friend(target):
 				print("talk")
-			game_map.move()
 			player = grid.move_actor(player, target)
+			game_map.move()
 			ui_turn_counter.add()
 		else:
 			game_map.dont_move()

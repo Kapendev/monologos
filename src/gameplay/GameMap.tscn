@@ -52,7 +52,7 @@ fov = 90.0
 far = 50.0
 
 [node name="Target" type="Sprite3D" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.517638, -1.93185 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.7 )
 pixel_size = 0.05
 billboard = 1
 shaded = true
