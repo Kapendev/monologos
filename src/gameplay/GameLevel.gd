@@ -21,7 +21,7 @@ func _ready():
 	for _i in range(randi() % 4):
 		spin_player_left()
 		game_map.spin_left_now()
-	grid.add_enemy(Vector2(2, 2), 0, 0, "floor2|hello") #roedpawojdpoawjs
+	grid.add_enemy(Vector2(2, 2), 0, 0, "mon2|hello") #roedpawojdpoawjs
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/sprites/floor1.png" type="Texture" id=1]
-[ext_resource path="res://assets/sprites/bittersweet.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/monologos.png" type="Texture" id=2]
 [ext_resource path="res://game_env.tres" type="Environment" id=3]
 [ext_resource path="res://src/gameplay/GameMap.gd" type="Script" id=4]
 [ext_resource path="res://assets/sprites/noise.png" type="Texture" id=5]
