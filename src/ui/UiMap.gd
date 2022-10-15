@@ -4,7 +4,7 @@ const CELL_SIZE := Vector2(16.0, 16.0)
 const ACTOR_SIZE := 4
 const MAP_OFFSET := 200
 
-var grid: Lib.Grid = null
+var grid: Lib.Grid
 var blacks := [] # Vector2
 
 onready var tween: Tween = $Tween

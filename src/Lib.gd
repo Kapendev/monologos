@@ -2,10 +2,10 @@ class_name Lib
 
 const SPRITES_PATH = "res://assets/sprites/{}.png"
 const SPLIT_PAT = "|"
-const C1 := Color("#282328")
-const C2 := Color("#545c7e")
-const C3 := Color("#c56981")
-const C4 := Color("#a3a29a")
+const C1 := Color("#211f1f")
+const C2 := Color("#372c38")
+const C3 := Color("#6e6e6e")
+const C4 := Color("#ababab")
 
 enum ActorType {
 	NONE, WALL, FRIEND, ENEMY

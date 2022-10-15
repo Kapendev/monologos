@@ -6,13 +6,6 @@
 [ext_resource path="res://src/gameplay/GameMap.gd" type="Script" id=4]
 [ext_resource path="res://assets/sprites/noise.png" type="Texture" id=5]
 
-[sub_resource type="PlaneMesh" id=1]
-size = Vector2( 33, 33 )
-
-[sub_resource type="SpatialMaterial" id=2]
-albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 30, 30, 30 )
-
 [sub_resource type="Shader" id=4]
 code = "// Made by Fernando Brandt
 
@@ -39,8 +32,21 @@ shader = SubResource( 4 )
 shader_param/flip = null
 shader_param/gradient = ExtResource( 2 )
 
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 33, 33 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 40, 40, 40 )
+
 [node name="GameMap" type="Spatial"]
 script = ExtResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 
 [node name="Ground" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
@@ -51,26 +57,27 @@ transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0
 fov = 90.0
 far = 50.0
 
-[node name="Target" type="Sprite3D" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.7 )
-pixel_size = 0.05
-billboard = 1
-shaded = true
-double_sided = false
-
 [node name="Noise" type="Sprite3D" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.310583, -1.15911 )
-visible = false
 modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
 pixel_size = 0.25
 billboard = 1
 shaded = true
 texture = ExtResource( 5 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource( 5 )
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Target" type="TextureRect" parent="Camera"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -90.0
+margin_right = 160.0
+margin_bottom = 90.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 160, 90 )
+mouse_filter = 2
+stretch_mode = 4
 
 [node name="Tween" type="Tween" parent="."]
 

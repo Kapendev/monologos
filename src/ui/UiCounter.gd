@@ -13,6 +13,7 @@ onready var anim_margin := start_margin + 2
 
 func _ready() -> void:
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
+	modulate = Lib.C4
 
 func add() -> void:
 	count += 1
