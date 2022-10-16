@@ -1,19 +1,23 @@
 extends Spatial
 
-const MOVE_VALUE := Vector3(0.0, 0.0, -0.815)
-const SPIN_VALUE := Vector3(0.0, PI / 2.0, 0.0)
+const MOVE_VALUE := Vector3(0, 0, -0.815)
+const SPIN_VALUE := Vector3(0, PI / 2.0, 0)
 
 var move_time := 0.3
 var spin_time := 0.3
 
+export var ground_material : SpatialMaterial
+
 onready var tween: Tween = $Tween
 onready var camera: Camera = $Camera
 onready var noise: Sprite3D = $Camera/Noise
-onready var target: TextureRect = $Camera/Target
+onready var target: TextureRect = $Target
+onready var ground : MeshInstance = $Ground
 onready var camera_start_translation: Vector3 = camera.translation
 
 func _ready() -> void:
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
+	set_material(ground_material)
 
 func is_active() -> bool:
 	return tween.is_active()
@@ -41,12 +45,22 @@ func set_map_visibility(value: bool, time: float) -> void:
 func is_map_visible() -> bool:
 	return not noise.visible
 
+func set_material(material: SpatialMaterial) -> void:
+	ground.set_surface_material(0, material)
+
 func tweeen(prop: String, value: Vector3, time: float) -> void:
+	# Target tween.
 	tween.interpolate_property(
 		target, "modulate",
 		Color(0, 0, 0, 0), target.modulate,
 		move_time / 2.0, Tween.TRANS_SINE
 	)
+	tween.interpolate_property(
+		target, "rect_scale",
+		Vector2(1, 1), target.rect_scale,
+		move_time / 2.0, Tween.TRANS_SINE
+	)
+	# Camera tween.
 	tween.interpolate_property(
 		camera, prop,
 		camera.get(prop), value,
