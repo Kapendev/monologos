@@ -42,6 +42,11 @@ class Actor:
 		ap = actor.ap
 		moves = actor.moves
 		info = actor.info
+	
+	func swap_with(actor: Actor) -> void:
+		var temp := Actor.new(type, hp, ap, moves, info)
+		change_with(actor)
+		actor.change_with(temp)
 
 class Grid:
 	var width: int

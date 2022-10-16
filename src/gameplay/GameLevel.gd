@@ -92,3 +92,5 @@ func on_pressed_map() -> void:
 		game_map.set_map_visibility(not is_map_visible, anim_time)
 		ui_turn_counter.set_counter_visibility(not is_map_visible, anim_time)
 		ui_map.set_map_visibility(is_map_visible, anim_time)
+		if is_map_visible:
+			ui_turn_counter.add()

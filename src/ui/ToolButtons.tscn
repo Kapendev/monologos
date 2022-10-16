@@ -6,6 +6,7 @@
 [node name="ToolButtons" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -16,6 +17,7 @@ anchor_bottom = 1.0
 margin_left = -52.0
 margin_top = -33.0
 margin_right = 52.0
+mouse_filter = 2
 alignment = 1
 
 [node name="MapButton" parent="HBoxContainer" instance=ExtResource( 1 )]
