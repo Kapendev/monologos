@@ -3,9 +3,6 @@ extends Spatial
 const MOVE_VALUE := Vector3(0, 0, -0.815)
 const SPIN_VALUE := Vector3(0, PI / 2.0, 0)
 
-var move_time := 0.3
-var spin_time := 0.3
-
 export var ground_material : SpatialMaterial
 
 onready var tween: Tween = $Tween
@@ -52,13 +49,13 @@ func tweeen(prop: String, value: Vector3, time: float) -> void:
 	# Target tween.
 	tween.interpolate_property(
 		target, "modulate",
-		Color(0, 0, 0, 0), target.modulate,
-		move_time / 2.0, Tween.TRANS_SINE
+		Lib.C0, target.modulate,
+		time / 2.0, Tween.TRANS_SINE
 	)
 	tween.interpolate_property(
 		target, "rect_scale",
 		Vector2(1, 1), target.rect_scale,
-		move_time / 2.0, Tween.TRANS_SINE
+		time / 2.0, Tween.TRANS_SINE
 	)
 	# Camera tween.
 	tween.interpolate_property(
@@ -68,25 +65,25 @@ func tweeen(prop: String, value: Vector3, time: float) -> void:
 	)
 	tween.start()
 
-func dont_move() -> void:
+func dont_move(time: float) -> void:
 	tween.interpolate_property(
 		camera, "translation",
 		camera.translation, camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y) / 2.0,
-		move_time / 2.0, Tween.TRANS_SINE
+		time / 2.0, Tween.TRANS_SINE
 	)
 	tween.interpolate_property(
 		camera, "translation",
 		camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y) / 2.0, camera.translation,
-		move_time / 2.0, Tween.TRANS_SINE,
-		Tween.EASE_IN_OUT, move_time / 2.0
+		time / 2.0, Tween.TRANS_SINE,
+		Tween.EASE_IN_OUT, time / 2.0
 	)
 	tween.start()
 
-func move() -> void:
+func move(time: float) -> void:
 	tweeen(
 		"translation",
 		camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y),
-		move_time
+		time
 	)
 
 func spin_left_now() -> void:
@@ -95,11 +92,11 @@ func spin_left_now() -> void:
 func spin_right_now() -> void:
 	camera.rotation -= SPIN_VALUE
 
-func spin_left() -> void:
-	tweeen("rotation", camera.rotation + SPIN_VALUE, spin_time)
+func spin_left(time: float) -> void:
+	tweeen("rotation", camera.rotation + SPIN_VALUE, time)
 	
-func spin_right() -> void:
-	tweeen("rotation", camera.rotation - SPIN_VALUE, spin_time)
+func spin_right(time: float) -> void:
+	tweeen("rotation", camera.rotation - SPIN_VALUE, time)
 
 func on_tween_all_completed() -> void:
 	camera.translation = camera_start_translation

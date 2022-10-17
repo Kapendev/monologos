@@ -2,6 +2,7 @@ class_name Lib
 
 const SPRITES_PATH = "res://assets/sprites/{}.png"
 const SPLIT_PAT = "|"
+const C0 := Color(0, 0, 0, 0)
 const C1 := Color("#211f1f")
 const C2 := Color("#372c38")
 const C3 := Color("#6e6e6e")
