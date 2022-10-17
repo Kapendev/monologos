@@ -1,7 +1,16 @@
 extends Spatial
 
+signal map_visibility_changed()
+signal map_position_changed()
+
+enum MapState {
+	IDLE, MOVE, ANIMATION
+}
+
 const MOVE_VALUE := Vector3(0, 0, -0.815)
 const SPIN_VALUE := Vector3(0, PI / 2.0, 0)
+
+var state = 0
 
 export var ground_material : SpatialMaterial
 
@@ -25,6 +34,7 @@ func show_map(time: float) -> void:
 		noise, "opacity", 1.0, 0.0, time, Tween.TRANS_SINE
 	)
 	tween.start()
+	state = MapState.ANIMATION
 
 func hide_map(time: float) -> void:
 	noise.show()
@@ -32,6 +42,7 @@ func hide_map(time: float) -> void:
 		noise, "opacity", 0.0, 1.0, time, Tween.TRANS_SINE
 	)
 	tween.start()
+	state = MapState.ANIMATION
 
 func set_map_visibility(value: bool, time: float) -> void:
 	if value:
@@ -64,6 +75,7 @@ func tweeen(prop: String, value: Vector3, time: float) -> void:
 		time, Tween.TRANS_SINE
 	)
 	tween.start()
+	state = MapState.MOVE
 
 func dont_move(time: float) -> void:
 	tween.interpolate_property(
@@ -78,6 +90,7 @@ func dont_move(time: float) -> void:
 		Tween.EASE_IN_OUT, time / 2.0
 	)
 	tween.start()
+	state = MapState.MOVE
 
 func move(time: float) -> void:
 	tweeen(
@@ -102,3 +115,9 @@ func on_tween_all_completed() -> void:
 	camera.translation = camera_start_translation
 	if noise.opacity == 0.0:
 		noise.hide()
+	match state:
+		MapState.MOVE:
+			emit_signal("map_position_changed")
+		MapState.ANIMATION:
+			emit_signal("map_visibility_changed")
+	state = MapState.IDLE
