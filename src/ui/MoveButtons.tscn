@@ -31,7 +31,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 key = "ui_up"
 
-[node name="UpButton2" parent="VBoxContainer/Box1" instance=ExtResource( 1 )]
+[node name="Poop" parent="VBoxContainer/Box1" instance=ExtResource( 1 )]
 margin_left = 28.0
 margin_right = 53.0
 margin_bottom = 30.0
@@ -39,7 +39,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 key = "ui_up"
 
-[node name="UpButton3" parent="VBoxContainer/Box1" instance=ExtResource( 1 )]
+[node name="Poop2" parent="VBoxContainer/Box1" instance=ExtResource( 1 )]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 57.0
 margin_right = 82.0

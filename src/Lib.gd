@@ -129,3 +129,9 @@ class Grid:
 
 static func load_sprite(path: String) -> StreamTexture:
 	return load(SPRITES_PATH.format([path], "{}")) as StreamTexture
+
+static func random_scale(old_scale: float) -> float:
+	var new_scale := old_scale
+	while new_scale == old_scale:
+		new_scale = rand_range(0.95, 1.05)
+	return new_scale

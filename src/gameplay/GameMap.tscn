@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://assets/materials/floor1.tres" type="Material" id=1]
+[ext_resource path="res://assets/sounds/move.ogg" type="AudioStream" id=1]
 [ext_resource path="res://assets/sprites/monologos.png" type="Texture" id=2]
 [ext_resource path="res://game_env.tres" type="Environment" id=3]
 [ext_resource path="res://src/gameplay/GameMap.gd" type="Script" id=4]
 [ext_resource path="res://assets/sprites/noise.png" type="Texture" id=5]
+[ext_resource path="res://assets/music/wind.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/materials/floor2.tres" type="Material" id=7]
+[ext_resource path="res://assets/sounds/ghooost.wav" type="AudioStream" id=8]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 33, 33 )
@@ -37,7 +40,7 @@ shader_param/gradient = ExtResource( 2 )
 
 [node name="GameMap" type="Spatial"]
 script = ExtResource( 4 )
-ground_material = ExtResource( 1 )
+ground_material = ExtResource( 7 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 0 )
@@ -55,7 +58,7 @@ texture = ExtResource( 5 )
 
 [node name="Ground" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 7 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 3 )
@@ -81,3 +84,15 @@ mouse_filter = 2
 stretch_mode = 4
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="GhostSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="MoveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -28.0
+
+[node name="WindMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+pitch_scale = 0.2
+autoplay = true

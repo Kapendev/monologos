@@ -19,6 +19,8 @@ onready var camera: Camera = $Camera
 onready var noise: Sprite3D = $Camera/Noise
 onready var target: TextureRect = $Target
 onready var ground : MeshInstance = $Ground
+onready var move_sound: AudioStreamPlayer = $MoveSound
+onready var ghost_sound: AudioStreamPlayer = $GhostSound
 onready var camera_start_translation: Vector3 = camera.translation
 
 func _ready() -> void:
@@ -56,6 +58,10 @@ func is_map_visible() -> bool:
 func set_material(material: SpatialMaterial) -> void:
 	ground.set_surface_material(0, material)
 
+func play_sound(sound: AudioStreamPlayer) -> void:
+	sound.pitch_scale = Lib.random_scale(sound.pitch_scale)
+	sound.play()
+
 func tweeen(prop: String, value: Vector3, time: float) -> void:
 	# Target tween.
 	tween.interpolate_property(
@@ -90,6 +96,7 @@ func dont_move(time: float) -> void:
 		Tween.EASE_IN_OUT, time / 2.0
 	)
 	tween.start()
+	play_sound(move_sound)
 	state = MapState.MOVE
 
 func move(time: float) -> void:
@@ -98,6 +105,7 @@ func move(time: float) -> void:
 		camera.translation + MOVE_VALUE.rotated(Vector3.UP, camera.rotation.y),
 		time
 	)
+	play_sound(move_sound)
 
 func spin_left_now() -> void:
 	camera.rotation += SPIN_VALUE
@@ -110,6 +118,11 @@ func spin_left(time: float) -> void:
 	
 func spin_right(time: float) -> void:
 	tweeen("rotation", camera.rotation - SPIN_VALUE, time)
+
+func set_target_texture(texture: StreamTexture) -> void:
+	target.texture = texture
+	if target.texture != null:
+		play_sound(ghost_sound)
 
 func on_tween_all_completed() -> void:
 	camera.translation = camera_start_translation

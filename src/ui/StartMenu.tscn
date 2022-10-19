@@ -46,3 +46,5 @@ margin_top = -130.0
 margin_bottom = 130.0
 width = 640
 height = 260
+hide_speed = 6
+show_speed = 6
