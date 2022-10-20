@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/sounds/move.ogg" type="AudioStream" id=1]
 [ext_resource path="res://assets/sprites/monologos.png" type="Texture" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://assets/music/wind.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/materials/floor2.tres" type="Material" id=7]
 [ext_resource path="res://assets/sounds/ghooost.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sounds/run.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/sounds/deeeeed.wav" type="AudioStream" id=10]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 33, 33 )
@@ -37,6 +39,22 @@ void fragment(){
 shader = SubResource( 4 )
 shader_param/flip = null
 shader_param/gradient = ExtResource( 2 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "black"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Black:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.129412, 0.121569, 0.121569, 1 ), Color( 0.129412, 0.121569, 0.121569, 0 ) ]
+}
 
 [node name="GameMap" type="Spatial"]
 script = ExtResource( 4 )
@@ -88,11 +106,34 @@ stretch_mode = 4
 [node name="GhostSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+pitch_scale = 0.8
+
 [node name="MoveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
-volume_db = -28.0
+volume_db = -32.0
+
+[node name="BoopSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -6.0
+pitch_scale = 22.0
 
 [node name="WindMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+volume_db = 10.0
 pitch_scale = 0.2
 autoplay = true
+
+[node name="RunSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+pitch_scale = 3.0
+
+[node name="Black" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.129412, 0.121569, 0.121569, 0 )
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+anims/black = SubResource( 6 )

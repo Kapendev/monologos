@@ -2,136 +2,153 @@ class_name Lib
 
 const SPRITES_PATH = "res://assets/sprites/{}.png"
 const SPLIT_PAT = "|"
+
 const C0 := Color(0, 0, 0, 0)
+const C9 := Color(1, 1, 1, 1)
 const C1 := Color("#211f1f")
 const C2 := Color("#372c38")
 const C3 := Color("#6e6e6e")
 const C4 := Color("#ababab")
 
-enum ActorType {
-	NONE, WALL, FRIEND, ENEMY
-}
-
-enum MoveType {
-	UP, DOWN, LEFT, RIGHT,
-}
-
-class Actor:
-	var type: int
-	var hp: int
-	var ap: int
-	var info: String
-	var moves: Array # int
-	
-	func _init(_type: int, _hp: int, _ap: int, _moves := [], _info := "") -> void:
-		type = _type
-		hp = _hp
-		ap = _ap
-		moves = _moves
-		info = _info
-	
-	func change(_type: int, _hp: int, _ap: int, _moves: Array, _info: String) -> void:
-		type = _type
-		hp = _hp
-		ap = _ap
-		moves = _moves
-		info = _info
-	
-	func change_with(actor: Actor) -> void:
-		type = actor.type
-		hp = actor.hp
-		ap = actor.ap
-		moves = actor.moves
-		info = actor.info
-	
-	func swap_with(actor: Actor) -> void:
-		var temp := Actor.new(type, hp, ap, moves, info)
-		change_with(actor)
-		actor.change_with(temp)
+const UP = "u"
+const DOWN = "d"
+const LEFT = "l"
+const RIGHT = "r"
 
 class Grid:
-	var width: int
-	var height: int
+	var w: int
+	var h: int
+	var cells: Array
+	
+	func _init(_w: int, _h: int) -> void:
+		w = _w
+		h = _h
+		cells = []
+		for _y in range(h):
+			for _x in range(w):
+				cells.append(0)
+	
+	func id(vec: Vector2) -> int:
+		return int(vec.y) * w + int(vec.x)
+	
+	func vec(id: int) -> Vector2:
+		# warning-ignore:integer_division
+		return Vector2(id % w, id / w)
+	
+	func cell(id: int) -> int:
+		return cells[id]
+	
+	func cellv(vec: Vector2) -> int:
+		return cells[id(vec)]
+	
+	func change(id: int, value: int) -> void:
+		cells[id] = value
+	
+	func changev(vec: Vector2, value: int) -> void:
+		cells[id(vec)] = value
+	
+	func swap(id1: int, id2: int) -> void:
+		change(id1, cell(id1) + cell(id2))
+		change(id2, cell(id1) - cell(id2))
+		change(id1, cell(id1) - cell(id2))
+	
+	func swapv(vec1: Vector2, vec2: Vector2) -> void:
+		swap(id(vec1), id(vec2))
+	
+	func is_inside(vec: Vector2) -> bool:
+		return vec.x >= 0 \
+		and vec.x < w \
+		and vec.y >= 0 \
+		and vec.y < h \
+
+class Actor:
+	var is_event: bool
+	var id: int
+	var counter: int
+	var moveset: String
+	var info: String
+	var pos: Vector2
+	
+	func _init(_is_event: bool, _pos: Vector2, _info: String, _moveset := "") -> void:
+		is_event = _is_event
+		moveset = _moveset
+		info = _info
+		pos = _pos
+		counter = 0
+		id = 0
+	
+	func data() -> PoolStringArray:
+		return info.split(SPLIT_PAT)
+	
+	func die() -> void:
+		pos.x = - 1
+		moveset = ""
+	
+static func new_event(pos: Vector2, info: String) -> Actor:
+	return Actor.new(true, pos, info)
+
+static func new_actor(pos: Vector2, info := "", moveset := "") -> Actor:
+	return Actor.new(false, pos, info, moveset)
+
+class GameGrid extends Grid:
 	var actors := []
 	
-	func __new_empty(type: int) -> Actor:
-		return Actor.new(type, 0, 0, [])
+	func _init(_w: int, _h: int).(_w, _h) -> void:
+		pass # What the...
 	
-	func __new_none() -> Actor:
-		return __new_empty(ActorType.NONE)
+	func add_actor(actor: Actor) -> void:
+		actors.append(actor)
+		actor.id = len(actors)
+		changev(actor.pos, actor.id)
 	
-	func __new_wall() -> Actor:
-		return __new_empty(ActorType.WALL)
+	func add_wall(pos: Vector2) -> void:
+		changev(pos, -1)
 	
-	func __new_friend() -> Actor:
-		return __new_empty(ActorType.FRIEND)
+	func has_actor(pos: Vector2) -> bool:
+		var value := cellv(pos)
+		return value > 0 and value <= len(actors)
 	
-	func __new_enemy() -> Actor:
-		return __new_empty(ActorType.ENEMY)
+	func has_wall(pos: Vector2) -> bool:
+		return cellv(pos) == -1
 	
-	func _init(_width: int, _height: int):
-		width = _width
-		height = _height
-		for _y in range(height):
-			for _x in range(width):
-				actors.append(__new_none())
+	func move(actor: Actor, dir: String) -> Actor:
+		var new_pos := actor.pos
+		match dir:
+			UP:
+				new_pos.y -= 1
+			DOWN:
+				new_pos.y += 1
+			LEFT:
+				new_pos.x -= 1
+			RIGHT:
+				new_pos.x += 1
+		if is_inside(new_pos) and not has_wall(new_pos):
+			if has_actor(new_pos):
+				return actors[cellv(new_pos) - 1]
+			else:
+				swapv(actor.pos, new_pos)
+				actor.pos = new_pos
+		return actor
 	
-	func index(position: Vector2) -> int:
-		return int(floor(position.y)) * width + int(floor(position.x))
+	func eat(actor1: Actor, actor2: Actor) -> void:
+		changev(actor2.pos, 0)
+		swapv(actor1.pos, actor2.pos)
+		actor1.pos = actor2.pos
+		actor2.die()
 	
-	func exists(position: Vector2) -> bool:
-		return position.x >= 0 \
-		and position.x < width \
-		and position.y >= 0 \
-		and position.y < height \
-	
-	func add_none(position: Vector2) -> Vector2:
-		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.NONE, 0, 0, [], "")
-		return position
-	
-	func add_wall(position: Vector2) -> Vector2:
-		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.WALL, 0, 0, [], "")
-		return position
-	
-	func add_friend(position: Vector2, hp: int, ap: int, info: String, moves := []) -> Vector2:
-		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.FRIEND, hp, ap, moves, info)
-		return position
-	
-	func add_enemy(position: Vector2, hp: int, ap: int, info: String, moves := []) -> Vector2:
-		var actor: Actor = actors[index(position)]
-		actor.change(ActorType.ENEMY, hp, ap, moves, info)
-		return position
-	
-	func is_none(position: Vector2) -> bool:
-		return actors[index(position)].type == ActorType.NONE
-	
-	func is_wall(position: Vector2) -> bool:
-		return actors[index(position)].type == ActorType.WALL
-	
-	func is_friend(position: Vector2) -> bool:
-		return actors[index(position)].type == ActorType.FRIEND
-	
-	func is_enemy(position: Vector2) -> bool:
-		return actors[index(position)].type == ActorType.ENEMY
-	
-	func move_actor(position: Vector2, new_position: Vector2) -> Vector2:
-		var actor: Actor = actors[index(position)]
-		var new_actor: Actor = actors[index(new_position)]
-		new_actor.change_with(actor)
-		add_none(position)
-		return new_position
-	
-	func get_actor_data(position: Vector2) -> Array:
-		return actors[index(position)].info.split(SPLIT_PAT)
+	func update() -> void:
+		for actor in actors:
+			if not actor.moveset.empty():
+				move(actor, actor.moveset[actor.counter])
+				actor.counter += 1
+				if actor.counter >= len(actor.moveset):
+					actor.counter = 0
 
 static func load_sprite(path: String) -> StreamTexture:
 	return load(SPRITES_PATH.format([path], "{}")) as StreamTexture
 
-static func random_scale(old_scale: float) -> float:
+static func random_scale(old_scale: float, base_scale := 1.0) -> float:
 	var new_scale := old_scale
 	while new_scale == old_scale:
-		new_scale = rand_range(0.95, 1.05)
+		new_scale = rand_range(base_scale - 0.05, base_scale + 0.05)
 	return new_scale

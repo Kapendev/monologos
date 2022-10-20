@@ -1,5 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://assets/sounds/hit.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/sounds/run.wav" type="AudioStream" id=2]
 [ext_resource path="res://src/ui/QteScreen.gd" type="Script" id=3]
 
 [node name="QteScreen" type="Control"]
@@ -48,3 +50,11 @@ mouse_filter = 2
 stretch_mode = 4
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+pitch_scale = 3.9
+
+[node name="RunSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+pitch_scale = 3.9

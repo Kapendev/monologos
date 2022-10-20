@@ -1,7 +1,7 @@
 extends Node
 
 enum GameState {
-	IDLE, MAP, MOVE, ATTACK, TALK
+	IDLE, MAP, MOVE, ATTACK, EVENT, DEATH, WIN
 }
 
 var state := 0
@@ -9,12 +9,14 @@ var state := 0
 var key_time := 0.1
 var key_delay_time := 0.15
 var move_time := 0.3
+var spin_time := 0.4
 var map_time := 0.5
 var start_time := 2.5
+var death_time := 5.5
 
-var grid: Lib.Grid
-var player: Vector2
-var player_direction := Vector2.UP
+var grid: Lib.GameGrid
+var player: Lib.Actor
+var player_dir := Vector2.UP
 
 onready var game_map := $GameMap
 onready var move_buttons := $MoveButtons
@@ -32,12 +34,13 @@ func _ready():
 
 	# Create data.
 	randomize()
-	grid = Lib.Grid.new(9, 9)
-	player = grid.add_friend(Vector2(), 0, 0, "")
+	grid = Lib.GameGrid.new(9, 9)
+	player = Lib.new_actor(Vector2())
+	grid.add_actor(player)
+	grid.add_actor(Lib.new_actor(Vector2(2, 2), "mon2|ddd", "urdl"))
 	for _i in range(randi() % 4):
 		spin_player_left()
 		game_map.spin_left_now()
-	grid.add_enemy(Vector2(2, 2), 0, 0, "mon5|ddd")
 	# Setup maps.
 	ui_map.grid = grid
 	game_map.show_map(start_time)
@@ -45,26 +48,29 @@ func _ready():
 
 func on_pressed_up() -> void:
 	if state == GameState.MOVE:
-		var target := player + player_direction
-		if grid.exists(target) and not grid.is_wall(target):
-			if grid.is_enemy(target):
-				attack(target)
-				change_state(GameState.ATTACK, move_time)
-			elif grid.is_friend(target):
-				talk(target)
-				change_state(GameState.TALK, move_time)
+		var old_pos := player.pos
+		var actor := grid.move(player, str_player_dir())
+		if actor == player:
+			if old_pos == player.pos:
+				game_map.dont_move(move_time)
 			else:
-				change_state(GameState.MOVE, move_time)
-			game_map.move(move_time)
-			player = grid.move_actor(player, target)
-		else:
-			game_map.dont_move(move_time)
+				game_map.move(move_time)
+			grid.update()
 			change_state(GameState.MOVE, move_time)
-	elif state == GameState.ATTACK:
-		if qte_screen.press_key("u"):
-			print("sound effect")
 		else:
-			print("fail")
+			if actor.is_event:
+				event(actor)
+				change_state(GameState.EVENT, move_time)
+			else:
+				attack(actor)
+				change_state(GameState.ATTACK, move_time)
+			grid.eat(player, actor)
+			game_map.move(move_time)
+	elif state == GameState.ATTACK:
+		if qte_screen.press_key(Lib.UP):
+			check_qte_win()
+		else:
+			death()
 
 func on_pressed_down() -> void:
 	if state == GameState.MOVE:
@@ -76,44 +82,57 @@ func on_pressed_down() -> void:
 		ui_map.set_map_visibility(false, map_time)
 		change_state(GameState.MOVE, map_time)
 	elif state == GameState.ATTACK:
-		if qte_screen.press_key("d"):
-			print("sound effect")
+		if qte_screen.press_key(Lib.DOWN):
+			check_qte_win()
 		else:
-			print("fail")
+			death()
 
 func on_pressed_left() -> void:
 	if state == GameState.MOVE:
-		game_map.spin_left(move_time)
+		game_map.spin_left(spin_time)
 		spin_player_left()
-		change_state(GameState.MOVE, move_time)
+		change_state(GameState.MOVE, spin_time)
 	elif state == GameState.ATTACK:
-		if qte_screen.press_key("l"):
-			print("sound effect")
+		if qte_screen.press_key(Lib.LEFT):
+			check_qte_win()
 		else:
-			print("fail")
+			death()
 
 func on_pressed_right() -> void:
 	if state == GameState.MOVE:
-		game_map.spin_right(move_time)
+		game_map.spin_right(spin_time)
 		spin_player_right()
-		change_state(GameState.MOVE, move_time)
+		change_state(GameState.MOVE, spin_time)
 	elif state == GameState.ATTACK:
-		if qte_screen.press_key("r"):
-			print("sound effect")
+		if qte_screen.press_key(Lib.RIGHT):
+			check_qte_win()
 		else:
-			print("fail")
+			death()
 
 func on_StateTimer_timeout() -> void:
 	move_buttons.activate()
+	if state == GameState.DEATH:
+		# TODO: Change later.....!!!!
+		get_tree().reload_current_scene()
 
-func attack(target: Vector2) -> void:
-	var enemy_data := grid.get_actor_data(target)
-	var enemy_name: String = enemy_data[0]
-	var enemy_code: String = enemy_data[1]
-	game_map.set_target_texture(Lib.load_sprite(enemy_name))
-	qte_screen.create_keys(enemy_code, key_time, move_time - key_time + key_delay_time)
+func check_qte_win() -> void:
+	if qte_screen.is_done():
+		game_map.set_target_texture(null)
+		change_state(GameState.MOVE)
 
-func talk(_target: Vector2) -> void:
+func death() -> void:
+	qte_screen.hide()
+	game_map.death()
+	change_state(GameState.DEATH, death_time)
+
+func attack(actor: Lib.Actor) -> void:
+	var data := actor.data()
+	var aname: String = data[0]
+	var acode: String = data[1]
+	game_map.set_target_texture(Lib.load_sprite(aname))
+	qte_screen.create_keys(acode, key_time, move_time - key_time + key_delay_time)
+
+func event(_target: Lib.Actor) -> void:
 	pass
  
 func change_state(new: int, time := 0.0) -> void:
@@ -121,24 +140,36 @@ func change_state(new: int, time := 0.0) -> void:
 	state_timer.start(time)
 	move_buttons.deactivate()
 
-func spin_player_left() -> void:
-	match player_direction:
+func str_player_dir() -> String:
+	match player_dir:
 		Vector2.UP:
-			player_direction = Vector2.LEFT
+			return Lib.UP
 		Vector2.LEFT:
-			player_direction = Vector2.DOWN
+			return Lib.LEFT
 		Vector2.DOWN:
-			player_direction = Vector2.RIGHT
+			return Lib.DOWN
 		Vector2.RIGHT:
-			player_direction = Vector2.UP
+			return Lib.RIGHT
+	return ""
+
+func spin_player_left() -> void:
+	match player_dir:
+		Vector2.UP:
+			player_dir = Vector2.LEFT
+		Vector2.LEFT:
+			player_dir = Vector2.DOWN
+		Vector2.DOWN:
+			player_dir = Vector2.RIGHT
+		Vector2.RIGHT:
+			player_dir = Vector2.UP
 
 func spin_player_right() -> void:
-	match player_direction:
+	match player_dir:
 		Vector2.UP:
-			player_direction = Vector2.RIGHT
+			player_dir = Vector2.RIGHT
 		Vector2.RIGHT:
-			player_direction = Vector2.DOWN
+			player_dir = Vector2.DOWN
 		Vector2.DOWN:
-			player_direction = Vector2.LEFT
+			player_dir = Vector2.LEFT
 		Vector2.LEFT:
-			player_direction = Vector2.UP
+			player_dir = Vector2.UP

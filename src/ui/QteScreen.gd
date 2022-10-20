@@ -13,6 +13,11 @@ const A2_RES := preload("res://assets/sprites/arrowkey2.png")
 onready var boxes: VBoxContainer = $Boxes
 onready var base_key: TextureRect = $ArrowKey
 onready var tween: Tween = $Tween
+onready var hit_sound: AudioStreamPlayer = $HitSound
+
+func play_sound(sound: AudioStreamPlayer) -> void:
+	sound.pitch_scale = Lib.random_scale(sound.pitch_scale)
+	sound.play()
 
 func is_active() -> bool:
 	return tween.is_active()
@@ -32,18 +37,22 @@ func press_key(code: String) -> bool:
 				if child.texture == A1_RES and child.flip_v == true:
 					if code == "u":
 						child.modulate.a = 0
+						play_sound(hit_sound)
 					return child.modulate.a == 0
 				elif child.texture == A1_RES:
 					if code == "d":
 						child.modulate.a = 0
+						play_sound(hit_sound)
 					return child.modulate.a == 0
 				elif child.texture == A2_RES and child.flip_h == true:
 					if code == "l":
 						child.modulate.a = 0
+						play_sound(hit_sound)
 					return child.modulate.a == 0
 				elif child.texture == A2_RES:
 					if code == "r":
 						child.modulate.a = 0
+						play_sound(hit_sound)
 					return child.modulate.a == 0
 	return false
 

@@ -16,19 +16,19 @@ func _ready() -> void:
 
 func _draw() -> void:
 	# Draw the grid.
-	for i in range(grid.height + 1):
-		draw_h_line(grid.width, i)
-	for i in range(grid.width + 1):
-		draw_v_line(i, grid.height)
+	for i in range(grid.h + 1):
+		draw_h_line(grid.w, i)
+	for i in range(grid.w + 1):
+		draw_v_line(i, grid.h)
 	# Draw the actors and walls in the grid.
-	for y in range(grid.height):
-		for x in range(grid.width):
+	for y in range(grid.h):
+		for x in range(grid.w):
 			var position := Vector2(x, y)
 			if position in blacks:
 				draw_black(position)
-			elif grid.is_wall(position):
+			elif grid.cellv(position) == -1:
 				draw_wall(position)
-			elif not grid.is_none(position):
+			elif grid.cellv(position) > 0:
 				draw_actor(position)
 
 func is_active() -> bool:
@@ -40,6 +40,9 @@ func show_map(time: float) -> void:
 	tween.interpolate_property(
 		self, "margin_top", viewport_height, 0.0, time, Tween.TRANS_SINE
 	)
+	tween.interpolate_property(
+		self, "modulate", Lib.C0, Lib.C9, time, Tween.TRANS_SINE
+	)
 	tween.start()
 
 func hide_map(time: float) -> void:
@@ -47,6 +50,9 @@ func hide_map(time: float) -> void:
 	show()
 	tween.interpolate_property(
 		self, "margin_top", 0.0, viewport_height, time, Tween.TRANS_SINE
+	)
+	tween.interpolate_property(
+		self, "modulate", Lib.C9, Lib.C0, time, Tween.TRANS_SINE
 	)
 	tween.start()
 
@@ -60,10 +66,10 @@ func is_map_visible() -> bool:
 	return visible
 
 func x_offset() -> float:
-	return -CELL_SIZE.x * (grid.width / 2.0)
+	return -CELL_SIZE.x * (grid.w / 2.0)
 
 func y_offset() -> float:
-	return -CELL_SIZE.y * (grid.height / 2.0)
+	return -CELL_SIZE.y * (grid.h / 2.0)
 
 func draw_h_line(x: int, y: int) -> void:
 	draw_line(
