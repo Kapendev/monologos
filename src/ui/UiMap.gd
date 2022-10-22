@@ -1,6 +1,6 @@
 extends Control
 
-const CELL_SIZE := Vector2(16.0, 16.0)
+const CELL_SIZE := Vector2(14.0, 14.0)
 const ACTOR_SIZE := 4
 const MAP_OFFSET := 200
 
@@ -8,10 +8,12 @@ var grid: Lib.Grid
 var blacks := [] # Vector2
 
 onready var tween: Tween = $Tween
+onready var dir: Label = $Dir
 
 func _ready() -> void:
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
 	margin_top = get_viewport_rect().size.y
+	dir.modulate = Lib.C4
 	hide()
 
 func _draw() -> void:

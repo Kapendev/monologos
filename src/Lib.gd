@@ -7,7 +7,7 @@ const C0 := Color(0, 0, 0, 0)
 const C9 := Color(1, 1, 1, 1)
 const C1 := Color("#211f1f")
 const C2 := Color("#372c38")
-const C3 := Color("#6e6e6e")
+const C3 := Color("#7a7272")
 const C4 := Color("#ababab")
 
 const UP = "u"
@@ -24,9 +24,8 @@ class Grid:
 		w = _w
 		h = _h
 		cells = []
-		for _y in range(h):
-			for _x in range(w):
-				cells.append(0)
+		for _i in range(w * h):
+			cells.append(0)
 	
 	func id(vec: Vector2) -> int:
 		return int(vec.y) * w + int(vec.x)
