@@ -1,6 +1,8 @@
 class_name Lib
 
 const SPRITES_PATH = "res://assets/sprites/{}.png"
+const MUSIC_PATH = "res://assets/music/{}.ogg"
+const LEVEL_PATH = "res://src/levels/{}.tscn"
 const SPLIT_PAT = "|"
 
 const C0 := Color(0, 0, 0, 0)
@@ -76,8 +78,8 @@ class Actor:
 		counter = 0
 		id = 0
 	
-	func data() -> PoolStringArray:
-		return info.split(SPLIT_PAT)
+	func data() -> Array:
+		return info.split(SPLIT_PAT) as Array
 	
 	func die() -> void:
 		pos.x = - 1
@@ -145,6 +147,12 @@ class GameGrid extends Grid:
 
 static func load_sprite(path: String) -> StreamTexture:
 	return load(SPRITES_PATH.format([path], "{}")) as StreamTexture
+
+static func load_music(path: String) -> AudioStream:
+	return load(MUSIC_PATH.format([path], "{}")) as AudioStream
+
+static func load_level(path: String) -> String:
+	return LEVEL_PATH.format([path], "{}")
 
 static func random_scale(old_scale: float, base_scale := 1.0) -> float:
 	var new_scale := old_scale

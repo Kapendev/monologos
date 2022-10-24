@@ -2,6 +2,7 @@ extends Spatial
 
 signal map_visibility_changed()
 signal map_position_changed()
+signal music_stoped()
 
 enum MapState {
 	IDLE, MOVE, ANIMATION
@@ -15,6 +16,7 @@ var state = 0
 export var ground_material : SpatialMaterial
 
 onready var tween: Tween = $Tween
+onready var bgmtween: Tween = $BGMTween
 onready var camera: Camera = $Camera
 onready var noise: Sprite3D = $Camera/Noise
 onready var target: TextureRect = $Target
@@ -28,10 +30,14 @@ onready var anim: AnimationPlayer = $Anim
 onready var black: ColorRect = $Black
 onready var wind_music: AudioStreamPlayer = $WindMusic
 onready var boop_sound: AudioStreamPlayer = $BoopSound
-onready var boop_sound_pitch = boop_sound.pitch_scale
+onready var bgm: AudioStreamPlayer = $BGM
+onready var boop_sound_pitch := boop_sound.pitch_scale
+onready var bgm_vol := bgm.volume_db
 
 func _ready() -> void:
+	bgm.volume_db = -80
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
+	bgmtween.connect("tween_all_completed", self, "on_bgmtween_all_completed")
 	set_material(ground_material)
 
 func is_active() -> bool:
@@ -68,6 +74,28 @@ func set_material(material: SpatialMaterial) -> void:
 func play_sound(sound: AudioStreamPlayer, base := 1.0) -> void:
 	sound.pitch_scale = Lib.random_scale(sound.pitch_scale, base)
 	sound.play()
+
+func play_music(music: String) -> void:
+	if not music.empty():
+		bgm.stream = Lib.load_music(music)
+		bgm.play()
+		bgmtween.interpolate_property(
+			bgm, "volume_db",
+			-80, bgm_vol,
+			3, Tween.TRANS_SINE
+		)
+		bgmtween.start()
+	else:
+		bgm.stream = null
+
+func stop_music() -> void:
+	if bgm.stream != null:
+		bgmtween.interpolate_property(
+			bgm, "volume_db",
+			bgm_vol, -80,
+			1, Tween.TRANS_SINE
+		)
+		bgmtween.start()
 
 func tweeen(prop: String, value: Vector3, time: float) -> void:
 	# Target tween.
@@ -149,3 +177,6 @@ func on_tween_all_completed() -> void:
 		MapState.ANIMATION:
 			emit_signal("map_visibility_changed")
 	state = MapState.IDLE
+
+func on_bgmtween_all_completed() -> void:
+	emit_signal("music_stoped")

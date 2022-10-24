@@ -103,6 +103,11 @@ stretch_mode = 4
 
 [node name="Tween" type="Tween" parent="."]
 
+[node name="BGMTween" type="Tween" parent="."]
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+
 [node name="GhostSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 

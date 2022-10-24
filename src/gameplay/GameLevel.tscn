@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/ui/UiMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/gameplay/GameMap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/ui/MoveButtons.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/gameplay/GameLevel.gd" type="Script" id=4]
 [ext_resource path="res://src/ui/ProgressTimer.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/ui/DialogueScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/ui/QteScreen.tscn" type="PackedScene" id=7]
 
 [node name="GameLevel" type="Node"]
@@ -20,5 +21,8 @@ visible = false
 [node name="QteScreen" parent="." instance=ExtResource( 7 )]
 
 [node name="ProgressTimer" parent="." instance=ExtResource( 5 )]
+
+[node name="DialogueScreen" parent="." instance=ExtResource( 6 )]
+visible = false
 
 [node name="StateTimer" type="Timer" parent="."]

@@ -17,7 +17,7 @@ func on_hide_ended() -> void:
 	exit.disabled = false
 
 func on_show_ended() -> void:
-	get_tree().change_scene("res://src/gameplay/GameLevel.tscn")
+	get_tree().change_scene("res://src/levels/Level1.tscn")
 
 func _on_start_button_down() -> void:
 	start.disabled = true
