@@ -6,13 +6,13 @@ extends Node
 onready var game := $GameLevel
 
 func _ready():
-	game.grid = Lib.GameGrid.new(6, 5)
-	game.win = Vector2(5, 2)
-	game.player = Lib.new_actor(Vector2(0, 2))
+	game.grid = Lib.GameGrid.new(8, 8)
+	game.win = Vector2(1, 0)
+	game.player = Lib.new_actor(Vector2(6, 7))
 	game.grid.add_actor(game.player)
 	game.grid.add_actor(Lib.new_actor(Vector2(5, 0), "uudd", "mon3|ududl|4"))
 	game.grid.add_actor(Lib.new_event(
 		game.win,
-		"mon5||Level4|...|\"WoOf!\"|...|\"WoOf!\"|I'm not going to pet you.|\"WoOf!\"|..."
+		"mon5||Level4|\"WoOf!\"|...|\"WoOf!\"|...|I'm not going to pet you.|\"WoOf!\"|..."
 	))
 	game.init()

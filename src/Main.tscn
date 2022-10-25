@@ -1,7 +1,65 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://src/ui/StartMenu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Main.gd" type="Script" id=1]
+[ext_resource path="res://src/ui/LineScreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/ui/MoveButtons.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sprites/arrows.png" type="Texture" id=4]
+[ext_resource path="res://assets/monogram.tres" type="DynamicFont" id=5]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
 
-[node name="StartMenu" parent="." instance=ExtResource( 2 )]
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -32.0
+margin_top = -45.0
+margin_right = 32.0
+margin_bottom = 19.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 32, 32 )
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 0.670588, 0.670588, 0.670588, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = 26.0
+margin_right = 160.0
+margin_bottom = 68.0
+custom_fonts/font = ExtResource( 5 )
+text = "Play with the arrow keys."
+align = 1
+valign = 1
+
+[node name="LineScreen" parent="." instance=ExtResource( 2 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -95.0
+margin_top = -65.0
+margin_right = 95.0
+margin_bottom = 65.0
+width = 190
+height = 130
+hide_speed = 2
+show_speed = 2
+
+[node name="MoveButtons" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="StartTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="EndTimer" type="Timer" parent="."]
+one_shot = true

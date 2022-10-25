@@ -23,6 +23,8 @@ func start(time_time: float, delay_time: float) -> void:
 
 func stop() -> void:
 	timer.stop()
+	set_process(false)
+	hide()
 
 func on_Delay_timeout() -> void:
 	show()
