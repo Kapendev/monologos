@@ -6,9 +6,12 @@ extends Node
 onready var game := $GameLevel
 
 func _ready():
-	game.grid = Lib.GameGrid.new(10, 1)
-	game.player = Lib.new_actor(Vector2())
+	game.grid = Lib.GameGrid.new(1, 8)
+	game.win = Vector2(0, 0)
+	game.player = Lib.new_actor(Vector2(0, 7))
 	game.grid.add_actor(game.player)
-	game.grid.add_actor(Lib.new_event(Vector2(3, 0), "cha1|||Hello world.|The end.|Or something.|Funny.|Maybe bad."))
-	game.grid.add_actor(Lib.new_event(Vector2(4, 0), "cha2||Level2|Hello world 222|yea"))
+	game.grid.add_actor(Lib.new_event(
+		game.win,
+		"cha1||Level2|...|..."
+	))
 	game.init()

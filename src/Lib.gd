@@ -88,7 +88,7 @@ class Actor:
 static func new_event(pos: Vector2, info: String) -> Actor:
 	return Actor.new(true, pos, info)
 
-static func new_actor(pos: Vector2, info := "", moveset := "") -> Actor:
+static func new_actor(pos: Vector2, moveset := "", info := "") -> Actor:
 	return Actor.new(false, pos, info, moveset)
 
 class GameGrid extends Grid:

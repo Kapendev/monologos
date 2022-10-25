@@ -12,7 +12,7 @@ onready var tween: Tween = $Tween
 
 var is_active := false
 var can_next := false
-var text_time := 0.6
+var text_time := 1
 
 func _ready() -> void:
 	anim.connect("animation_finished", self, "on_animation_finished")

@@ -6,6 +6,7 @@ const MAP_OFFSET := 200
 
 var grid: Lib.Grid
 var blacks := [] # Vector2
+var win := Vector2(-1, -1)
 
 onready var tween: Tween = $Tween
 onready var dir: Label = $Dir
@@ -26,7 +27,9 @@ func _draw() -> void:
 	for y in range(grid.h):
 		for x in range(grid.w):
 			var position := Vector2(x, y)
-			if position in blacks:
+			if position == win:
+				draw_win(position)
+			elif position in blacks:
 				draw_black(position)
 			elif grid.cellv(position) == -1:
 				draw_wall(position)
@@ -103,6 +106,15 @@ func draw_black(black: Vector2) -> void:
 			CELL_SIZE - Vector2(1.0, 1.0)
 		),
 		Lib.C2
+	)
+
+func draw_win(black: Vector2) -> void:
+	draw_rect(
+		Rect2(
+			Vector2(x_offset(), y_offset()) + CELL_SIZE * black + Vector2(1.0, 1.0),
+			CELL_SIZE - Vector2(1.0, 1.0)
+		),
+		Lib.C4
 	)
 
 func draw_actor(actor: Vector2) -> void:

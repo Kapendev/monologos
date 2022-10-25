@@ -19,6 +19,8 @@ var grid: Lib.GameGrid
 var player: Lib.Actor
 var player_dir := Vector2.UP
 
+var win := Vector2(-1, -1)
+
 var buffer_scene := ""
 
 onready var game_map := $GameMap
@@ -42,13 +44,9 @@ func init():
 	game_map.connect("music_stoped", self, "on_music_stoped")
 	game_map.connect("map_visibility_changed", self, "on_map_visibility_changed")
 
-	# Create data.
-	randomize()
-	for _i in range(randi() % 4):
-		spin_player_left()
-		game_map.spin_left_now()
 	# Setup maps.
 	ui_map.grid = grid
+	ui_map.win = win
 	ui_map.dir.text = str_player_dir(false)
 	game_map.show_map(start_time)
 	change_state(GameState.MOVE, start_time)
@@ -124,7 +122,7 @@ func on_StateTimer_timeout() -> void:
 	if state == GameState.DEATH:
 		change_state(GameState.IDLE)
 		buffer_scene = get_parent().name
-		game_map.hide_map()
+		game_map.hide_map(move_time)
 
 func on_DialogueScreen_ended() -> void:
 	if buffer_scene.empty():
