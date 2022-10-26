@@ -22,6 +22,7 @@ onready var buttons := [
 func _ready() -> void:
 	for i in range(len(buttons)):
 		buttons[i].connect("pressed", self, func_names[i])
+		buttons[i].disabled = Global.buttons_disabled
 	if not visible:
 		show()
 		modulate.a = 0.0

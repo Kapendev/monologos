@@ -20,6 +20,6 @@ func _ready():
 	game.grid.add_actor(Lib.new_actor(Vector2(5, 3), "", "mon1|dudur|4"))
 	game.grid.add_actor(Lib.new_event(
 		game.win,
-		"cha1||Level4|...|That feeling.|More of them are nearby.|I know where they are.|I just have to be careful."
+		"cha1||Level4|...|That feeling.|More of them are nearby.|I know where they are.|I just have to be careful.|..."
 	))
 	game.init()

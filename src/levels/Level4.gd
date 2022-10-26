@@ -31,5 +31,6 @@ func _ready():
 	game.grid.add_actor(Lib.new_actor(Vector2(7, 4), "rrll", "mon3|dudr|2"))
 	game.grid.add_actor(Lib.new_actor(Vector2(4, 4), "dduu", "mon3|dduudd|3"))
 	game.grid.add_actor(Lib.new_actor(Vector2(4, 2), "", "mon1|lrrdul|3"))
-	game.grid.add_actor(Lib.new_event(game.win, "cha1||Level5|...|Despicable creatures.|Following orders without thinking.|They cannot think for themselves.|I can.|I'm stronger.|I'm better.|I'm not Dioni."))
+	game.grid.add_actor(Lib.new_actor(Vector2(1, 0), "", "mon1|ulrdr|3"))
+	game.grid.add_actor(Lib.new_event(game.win, "cha1||Level5|...|Despicable creatures.|Following orders without thinking.|They cannot think for themselves.|I can.|I'm stronger.|I'm better.|I'm not Dioni.|..."))
 	game.init()

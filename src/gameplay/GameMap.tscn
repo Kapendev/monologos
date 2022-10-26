@@ -106,7 +106,7 @@ stretch_mode = 4
 [node name="BGMTween" type="Tween" parent="."]
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
-volume_db = -10.0
+volume_db = -8.0
 
 [node name="GhostSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
@@ -126,7 +126,7 @@ pitch_scale = 22.0
 
 [node name="WindMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = 10.0
+volume_db = 8.0
 pitch_scale = 0.2
 autoplay = true
 

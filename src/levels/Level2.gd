@@ -15,6 +15,6 @@ func _ready():
 	game.grid.add_wall(Vector2(0, 2))
 	game.grid.add_actor(Lib.new_event(
 		game.win,
-		"cha1||Level3|...|I'm not Dioni.|I'm not Dioni.|I don't know who I am.|But I'm not Dioni.|And I will prove it to you.|Dioni."
+		"cha1||Level3|...|I'm not Dioni.|I'm not Dioni.|I don't know who I am.|But I'm not Dioni.|And I will prove it to you.|..."
 	))
 	game.init()

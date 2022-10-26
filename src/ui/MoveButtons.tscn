@@ -10,8 +10,8 @@ mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 320.0
-margin_bottom = 180.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -31,13 +31,19 @@ size_flags_vertical = 3
 
 [node name="UpButton" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 1 )]
 margin_right = 104.0
-margin_bottom = 88.0
+margin_bottom = 71.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 key = "ui_up"
 
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer"]
+margin_top = 75.0
+margin_right = 104.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 0, 30 )
+
 [node name="DownButton" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 92.0
+margin_top = 109.0
 margin_right = 104.0
 margin_bottom = 180.0
 size_flags_horizontal = 3

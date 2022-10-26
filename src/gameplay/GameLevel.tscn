@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/ui/UiMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/gameplay/GameMap.tscn" type="PackedScene" id=2]
@@ -7,9 +7,11 @@
 [ext_resource path="res://src/ui/ProgressTimer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/ui/DialogueScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/ui/QteScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/materials/floor2.tres" type="Material" id=8]
 
 [node name="GameLevel" type="Node"]
 script = ExtResource( 4 )
+ground_material = ExtResource( 8 )
 
 [node name="GameMap" parent="." instance=ExtResource( 2 )]
 

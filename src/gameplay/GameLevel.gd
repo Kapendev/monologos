@@ -23,6 +23,8 @@ var win := Vector2(-1, -1)
 
 var buffer_scene := ""
 
+export var ground_material : SpatialMaterial
+
 onready var game_map := $GameMap
 onready var move_buttons := $MoveButtons
 onready var ui_map := $UiMap
@@ -49,6 +51,7 @@ func init():
 	ui_map.win = win
 	ui_map.dir.text = str_player_dir(false)
 	game_map.show_map(start_time)
+	game_map.set_material(ground_material)
 	change_state(GameState.MOVE, start_time)
 
 func on_pressed_up() -> void:
