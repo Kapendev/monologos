@@ -14,7 +14,7 @@
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 33, 33 )
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=7]
 code = "// Made by Fernando Brandt
 
 shader_type canvas_item;
@@ -36,7 +36,7 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+shader = SubResource( 7 )
 shader_param/flip = null
 shader_param/gradient = ExtResource( 2 )
 
@@ -106,7 +106,7 @@ stretch_mode = 4
 [node name="BGMTween" type="Tween" parent="."]
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
-volume_db = -8.0
+volume_db = -80.0
 
 [node name="GhostSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
@@ -126,7 +126,7 @@ pitch_scale = 22.0
 
 [node name="WindMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = 8.0
+volume_db = 5.0
 pitch_scale = 0.2
 autoplay = true
 

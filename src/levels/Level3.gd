@@ -11,15 +11,17 @@ func _ready():
 	game.player = Lib.new_actor(Vector2(0, 2))
 	game.grid.add_actor(game.player)
 	game.grid.add_actor(Lib.new_actor(Vector2(5, 0), "", "mon1|ududl|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(4, 1), "", "mon1|dudur|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(4, 2), "", "mon1|ududl|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(3, 2), "", "mon1|dudur|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(4, 3), "", "mon1|ududl|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(5, 4), "", "mon1|dudur|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(5, 1), "", "mon1|ududl|4"))
-	game.grid.add_actor(Lib.new_actor(Vector2(5, 3), "", "mon1|dudur|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(4, 0), "", "mon1|drlldr|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(4, 1), "", "mon1|llrdur|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(4, 2), "", "mon1|duudl|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(3, 2), "", "mon1|rrlrdu|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(4, 3), "", "mon1|ldddru|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(5, 4), "", "mon1|urlru|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(4, 4), "", "mon1|udrudl|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(5, 1), "", "mon1|lurdlud|4"))
+	game.grid.add_actor(Lib.new_actor(Vector2(5, 3), "", "mon1|drlldr|4"))
 	game.grid.add_actor(Lib.new_event(
 		game.win,
-		"cha1||Level4|...|That feeling.|More of them are nearby.|I know where they are.|I just have to be careful.|..."
+		"cha1||Level4|...|That feeling.|...|More of them are nearby.|I know where they are.|I just have to be careful.|..."
 	))
 	game.init()

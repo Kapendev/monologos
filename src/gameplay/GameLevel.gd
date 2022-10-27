@@ -1,5 +1,8 @@
 extends Node
 
+signal attack_win_ended()
+signal attack_lost_ended()
+
 enum GameState {
 	IDLE, MAP, MOVE, ATTACK, EVENT, DEATH, WIN
 }
@@ -63,7 +66,7 @@ func on_pressed_up() -> void:
 				game_map.dont_move(move_time)
 			else:
 				game_map.move(move_time)
-			grid.update()
+				grid.update()
 			change_state(state, move_time)
 		else:
 			if actor.is_event:
@@ -147,12 +150,14 @@ func check_qte_win() -> void:
 		game_map.set_target_texture(null)
 		progress_timer.stop()
 		change_state(GameState.MOVE)
+		emit_signal("attack_win_ended")
 
 func death() -> void:
 	progress_timer.stop()
 	qte_screen.hide()
 	game_map.death()
 	change_state(GameState.DEATH, death_time)
+	emit_signal("attack_lost_ended")
 
 func attack(actor: Lib.Actor) -> void:
 	var data := actor.data()

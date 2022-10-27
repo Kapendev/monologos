@@ -148,8 +148,8 @@ class GameGrid extends Grid:
 static func load_sprite(path: String) -> StreamTexture:
 	return load(SPRITES_PATH.format([path], "{}")) as StreamTexture
 
-static func load_music(path: String) -> AudioStream:
-	return load(MUSIC_PATH.format([path], "{}")) as AudioStream
+static func load_music(_path: String) -> AudioStream:
+	return preload("res://assets/music/wind.wav")
 
 static func load_level(path: String) -> String:
 	return LEVEL_PATH.format([path], "{}")

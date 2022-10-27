@@ -37,7 +37,7 @@ margin_right = 160.0
 margin_bottom = 64.0
 custom_fonts/font = ExtResource( 5 )
 text = "Play with the arrow keys
-or tap on the screen"
+or tap on the four sides of the screen"
 align = 1
 valign = 1
 
@@ -46,14 +46,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -95.0
-margin_top = -65.0
-margin_right = 95.0
-margin_bottom = 65.0
-width = 190
-height = 130
-hide_speed = 2
-show_speed = 2
+margin_left = -160.0
+margin_top = -90.0
+margin_right = 160.0
+margin_bottom = 90.0
 
 [node name="MoveButtons" parent="." instance=ExtResource( 3 )]
 visible = false

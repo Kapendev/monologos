@@ -12,6 +12,6 @@ func _ready():
 	game.grid.add_actor(game.player)
 	game.grid.add_actor(Lib.new_event(
 		game.win,
-		"cha1||Level2|...|I'm almost there.|..."
+		"cha1||Level2|...|I'm almost there.|I feel it.|..."
 	))
 	game.init()
